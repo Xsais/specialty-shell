@@ -16,8 +16,7 @@ CREATE OR REPLACE FUNCTION NEW_SERVICE
     cname     servinv.cname%TYPE,
     serial    servinv.serial%TYPE,
     partscost servinv.partscost%TYPE,
-    laborcost servinv.laborcost%TYPE,
-    tax       servinv.tax%TYPE
+    laborcost servinv.laborcost%TYPE
 )
 RETURN BOOLEAN
 AS
@@ -39,7 +38,7 @@ BEGIN
 			  serial,
 			  partscost,
 			  laborcost,
-			  tax
+			  ((partscost + labourcost) * 0.13)
             );
                     
         RETURN TRUE;
