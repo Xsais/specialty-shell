@@ -51,7 +51,6 @@ EXCEPTION
             RETURN FALSE;
 END;
 /
-/
 
 /** OUTPUT:
  * Function NEW_PROSPECT compiled
