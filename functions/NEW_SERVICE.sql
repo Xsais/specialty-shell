@@ -21,25 +21,37 @@ CREATE OR REPLACE FUNCTION NEW_SERVICE
 RETURN BOOLEAN
 AS
 BEGIN
+
+   IF partscost < 0
+    THEN
+        
+        RETURN -3;
+    END IF;
     
-        INSERT INTO servinv s (
-		  s.servinv,
-		  s.serdate,
-		  s.cname,
-		  s.serial,
-		  s.partscost,
-		  s.laborcost,
-		  s.tax
-        )
-            VALUES (
-			  servinv,
-			  serdate,
-			  cname,
-			  serial,
-			  partscost,
-			  labourcost,
-			  ((partscost + labourcost) * 0.13)
-            );
+   IF labourcost < 0
+    THEN
+        
+        RETURN -4;
+    END IF;
+    
+    INSERT INTO servinv s (
+	  s.servinv,
+	  s.serdate,
+	  s.cname,
+	  s.serial,
+	  s.partscost,
+	  s.laborcost,
+	  s.tax
+    )
+        VALUES (
+		  servinv,
+		  serdate,
+		  cname,
+		  serial,
+		  partscost,
+		  labourcost,
+		  ((partscost + labourcost) * 0.13)
+         );
                     
         RETURN 0;
 EXCEPTION
