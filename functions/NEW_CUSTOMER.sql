@@ -22,6 +22,24 @@ RETURN SMALLINT
 AS
 BEGIN
 
+    IF NOT REGEXP_LIKE(postal, '(\d{5}([ \-]\d{4})?)|([ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1}[ \-]\d{1}[A-Z]{1}\d{1})')
+        THEN
+
+            RETURN -3;
+    END IF;
+
+    IF NOT REGEXP_LIKE(hphone, '\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*')
+        THEN
+
+            RETURN -4;
+    END IF;
+
+    IF NOT REGEXP_LIKE(bphone, '\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*')
+        THEN
+
+            RETURN -5;
+    END IF;
+
     INSERT INTO customer
     	(
     	   cname,
