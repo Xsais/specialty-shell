@@ -1,0 +1,12 @@
+Error Codes:
+  - General:
+      -1: Internal server error
+      -2: Primmary key already exist in the database
+  - New Customer:
+      -3: Postal Code is not in the correct format
+      -4 Home Phone is not in the corect format
+      -5 Business Phone not in the correct format
+  - New Vehicle
+      -3 Invalid purchase cost
+      -4 Invalid freight cost
+      -5 Invalid list price
