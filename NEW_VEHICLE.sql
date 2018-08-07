@@ -13,7 +13,6 @@ CREATE OR REPLACE FUNCTION NEW_VEHICLE
     purchfrom  car.purchfrom%TYPE,
     purchcost  car.purchcost%TYPE,
     freightcost car.freightcost%TYPE,
-    totalcost  car.totalcost%TYPE,
     listprice  car.listprice%TYPE
 )
 RETURN SMALLINT
@@ -73,7 +72,7 @@ BEGIN
             purchinv,
             purchdate,
             purchfrom,
-            purchcost,
+            purchcost + freightcost,
             freightcost,
             totalcost,
             listprice
