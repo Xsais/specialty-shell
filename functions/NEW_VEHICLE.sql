@@ -45,7 +45,6 @@ BEGIN
   		c.purchfrom,
   		c.purchcost,
   		c.freightcost,
-  		c.totalcost,
   		c.listprice
   )
   VALUES (
@@ -62,7 +61,7 @@ BEGIN
             purchfrom,
             purchcost,
             freightcost,
-            totalcost,
+            purchcost + freight,
             listprice
   );
   RETURN 0;
