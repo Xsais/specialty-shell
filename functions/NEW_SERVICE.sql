@@ -16,7 +16,7 @@ CREATE OR REPLACE FUNCTION NEW_SERVICE
     cname     servinv.cname%TYPE,
     serial    servinv.serial%TYPE,
     partscost servinv.partscost%TYPE,
-    laborcost servinv.laborcost%TYPE
+    labourcost servinv.laborcost%TYPE
 )
 RETURN BOOLEAN
 AS
@@ -37,17 +37,19 @@ BEGIN
 			  cname,
 			  serial,
 			  partscost,
-			  laborcost,
+			  labourcost,
 			  ((partscost + labourcost) * 0.13)
             );
                     
-        RETURN TRUE;
+        RETURN 0;
 EXCEPTION
 
-    WHEN OTHERS
-        THEN
-            
-            RETURN FALSE;
+    WHEN DUP_VAL_ON_INDEX THEN
+
+         RETURN -2;
+    WHEN OTHERS THEN
+
+    	RETURN -1;
 END;
 /
 
