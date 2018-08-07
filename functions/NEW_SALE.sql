@@ -31,7 +31,61 @@ RETURN SMALLINT
 AS
 BEGIN
 
-  	INSERT INTO saleinv s (
+   IF totalprice < 0
+    THEN
+
+        RETURN -3;
+    END IF;
+    
+   IF discount < 0
+    THEN
+
+        RETURN -5;
+    END IF;
+    
+   IF licfee < 0
+    THEN
+
+        RETURN -6;
+    END IF;
+    
+   IF commission < 0
+    THEN
+
+        RETURN -7;
+    END IF;
+    
+   IF tradeallow < 0
+    THEN
+
+        RETURN -8;
+    END IF;
+    
+   IF NOT REGEXP_LIKE(fire, 'yes|no')
+    THEN
+
+        RETURN -9;
+    END IF;
+    
+   IF NOT REGEXP_LIKE(collision, 'yes|no')
+    THEN
+
+        RETURN -10;
+    END IF;
+    
+   IF NOT REGEXP_LIKE(liability, 'yes|no')
+    THEN
+
+        RETURN -11;
+    END IF;
+    
+   IF NOT REGEXP_LIKE(property, 'yes|no')
+    THEN
+
+        RETURN -12;
+    END IF;
+
+  INSERT INTO saleinv s (
   	     s.saleinv,
   	     s.cname,
   	     s.salesman,
