@@ -18,8 +18,6 @@ CREATE OR REPLACE FUNCTION NEW_SALE
     serial      saleinv.serial%TYPE,
     totalprice  saleinv.totalprice%TYPE,
     discount    saleinv.discount%TYPE,
-    net         saleinv.net%TYPE,
-    tax         saleinv.tax%TYPE,
     licfee      saleinv.licfee%TYPE,
     commission  saleinv.commission%TYPE,
     tradeserial saleinv.tradeserial%TYPE,
@@ -33,44 +31,44 @@ RETURN SMALLINT
 AS
 BEGIN
 
-  INSERT INTO saleinv s (
-       s.saleinv,
-       s.cname,
-       s.salesman,
-       s.saledate,
-       s.serial,
-       s.totalprice,
-       s.discount,
-       s.net,
-       s.tax,
-       s.licfee,
-       s.commission,
-       s.tradeserial,
-       s.tradeallow,
-       s.fire,
-       s.collision,
-       s.liability,
-       s.property
-   )
-  VALUES (
-    saleinv,
-    cname,
-    salesman,
-    saledate,
-    serial,
-    totalprice,
-    discount,
-    net,
-    tax,
-    licfee,
-    commission,
-    tradeserial,
-    tradeallow,
-    fire,
-    collision,
-    liability,
-    property
-  );
+  	INSERT INTO saleinv s (
+  	     s.saleinv,
+  	     s.cname,
+  	     s.salesman,
+  	     s.saledate,
+  	     s.serial,
+  	     s.totalprice,
+  	     s.discount,
+  	     s.net,
+  	     s.tax,
+  	     s.licfee,
+  	     s.commission,
+  	     s.tradeserial,
+  	     s.tradeallow,
+  	     s.fire,
+  	     s.collision,
+  	     s.liability,
+  	     s.property
+  	 )
+  	VALUES (
+  	  saleinv,
+  	  cname,
+  	  salesman,
+  	  saledate,
+  	  serial,
+  	  totalprice,
+  	  discount,
+  	  totalprice - discount,
+      0.13 * (totalprice - discount),
+  	  licfee,
+  	  commission,
+  	  tradeserial,
+  	  tradeallow,
+  	  fire,
+  	  collision,
+  	  liability,
+  	  property
+  	);
   
   RETURN 0;
 EXCEPTION
@@ -83,8 +81,6 @@ EXCEPTION
     	RETURN -1;
 END;
 /
-/
-
 /** OUTPUT:
  * Function NEW_SALE compiled
  *
