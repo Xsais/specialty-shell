@@ -18,7 +18,7 @@ CREATE OR REPLACE FUNCTION NEW_SERVICE
     partscost servinv.partscost%TYPE,
     labourcost servinv.laborcost%TYPE
 )
-RETURN BOOLEAN
+RETURN SMALLINT
 AS
 BEGIN
 
