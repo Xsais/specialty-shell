@@ -31,6 +31,24 @@ RETURN SMALLINT
 AS
 BEGIN
 
+   IF purchcost < 0
+    THEN
+        
+        RETURN -3;
+    END IF;
+
+   IF freightcost < 0
+    THEN
+        
+        RETURN -4;
+    END IF;
+
+   IF listprice < 0
+    THEN
+        
+        RETURN -5;
+    END IF;
+
   INSERT INTO car c (
   		c.serial,
   		c.cname,
@@ -45,6 +63,7 @@ BEGIN
   		c.purchfrom,
   		c.purchcost,
   		c.freightcost,
+  		c.totalcost,
   		c.listprice
   )
   VALUES (
