@@ -1,5 +1,7 @@
 SET SERVEROUTPUT ON;
 
+VARIABLE g_options VARCHAR2(255);
+
 DECLARE
 	-- Create needed variables to hold rows from tables and count of items
 	v_prospectCName prospect.cname%TYPE;
@@ -10,6 +12,7 @@ DECLARE
 	v_prospectTrim prospect.trim%TYPE;
 	v_prospectOption options%ROWTYPE;
 	v_prospectCount NUMBER;
+	v_optionsCount NUMBER;
 
 	-- Cursor to store the prospect entries in the DB
 	CURSOR prospectiveCustomers_cur IS 
@@ -27,9 +30,6 @@ DECLARE
 		   AND TRIM(UPPER(cyear)) = TRIM(UPPER(v_prospectCYear))
 		   AND TRIM(UPPER(color)) = TRIM(UPPER(v_prospectColor))
 		   AND TRIM(UPPER(trim)) = TRIM(UPPER(v_prospectTrim));
-
-	-- Create custom exception
-	ex_no_data_found EXCEPTION;
 BEGIN
 	-- Get and store the number of prospect entries based on the prompted name
 	SELECT COUNT(*)
@@ -53,18 +53,51 @@ BEGIN
 
 			-- Exit the loop when there is nothing found in the cursor
 			EXIT WHEN prospectiveCustomers_cur%NOTFOUND;
+			
+			-- Get the count of options
+			SELECT COUNT(ocode)
+			  INTO v_optionsCount
+			  FROM prospect
+			 WHERE TRIM(UPPER(cname)) = TRIM(UPPER(v_prospectCName))
+			   AND TRIM(UPPER(make)) = TRIM(UPPER(v_prospectMake))
+			   AND TRIM(UPPER(model)) = TRIM(UPPER(v_prospectModel))
+			   AND TRIM(UPPER(cyear)) = TRIM(UPPER(v_prospectCYear))
+			   AND TRIM(UPPER(color)) = TRIM(UPPER(v_prospectColor))
+			   AND TRIM(UPPER(trim)) = TRIM(UPPER(v_prospectTrim));
+			
+			-- Check if the prospect has any car options
+			IF (v_optionsCount > 0) THEN
+				-- Initialize options list variable
+				:g_options := 'w/ ';
+				
+				-- Open the prospectCustomersOptions_cur cursor
+				OPEN prospectCustomersOptions_cur;	
+					-- Loop through the results of the cursor and then display it to the console
+					LOOP
+						-- Fetch the results from the cursor into the prospect object variable
+						FETCH prospectCustomersOptions_cur INTO v_prospectOption;
+	
+						-- Exit the loop when there is nothing found in the cursor
+						EXIT WHEN prospectCustomersOptions_cur%NOTFOUND;					
+						-- Display options
+						:g_options := :g_options || TRIM(v_prospectOption.odesc) || '(' || TRIM(v_prospectOption.ocode) || ')';
+					-- End the loop
+					END LOOP;
+				-- Close the prospect List cursor
+				CLOSE prospectCustomersOptions_cur;
+			END IF;
 
 			-- Display prospective car information
 			IF (v_prospectCYear IS NULL) THEN
 				IF (v_prospectColor IS NULL) THEN
 					IF (v_prospectModel IS NULL) THEN
-						DBMS_OUTPUT.PUT_LINE(v_prospectCName || ' ' || TRIM(v_prospectMake) || ' ' || TRIM(v_prospectTrim));
+						DBMS_OUTPUT.PUT_LINE(v_prospectCName || ' ' || TRIM(v_prospectMake) || ' ' || TRIM(v_prospectTrim) || ' ' || :g_options);
 					ELSE
-						DBMS_OUTPUT.PUT_LINE(v_prospectCName || ' ' || TRIM(v_prospectMake) || ' ' || TRIM(v_prospectModel) || ' ' || TRIM(v_prospectTrim));
+						DBMS_OUTPUT.PUT_LINE(v_prospectCName || ' ' || TRIM(v_prospectMake) || ' ' || TRIM(v_prospectModel) || ' ' || TRIM(v_prospectTrim) || ' ' || :g_options);
 					END IF;	
 				ELSE
 					IF (v_prospectModel IS NULL) THEN
-						DBMS_OUTPUT.PUT_LINE(v_prospectCName || ' ' || TRIM(v_prospectMake) || ' ' || TRIM(v_prospectTrim));
+						DBMS_OUTPUT.PUT_LINE(v_prospectCName || ' ' || TRIM(v_prospectMake) || ' ' || TRIM(v_prospectTrim) || ' ' || :g_options);
 					ELSE
 						DBMS_OUTPUT.PUT_LINE(v_prospectCName || ' ' || TRIM(v_prospectColor) || ' ' || TRIM(v_prospectMake) || ' ' || TRIM(v_prospectModel) || ' ' || TRIM(v_prospectTrim));
 					END IF;	
@@ -72,9 +105,9 @@ BEGIN
 			ELSE
 				IF (v_prospectColor IS NULL) THEN
 					IF (v_prospectModel IS NULL) THEN
-						DBMS_OUTPUT.PUT_LINE(v_prospectCName || ' ' || TRIM(v_prospectCYear) || ' ' || TRIM(v_prospectMake) || ' ' || TRIM(v_prospectTrim));
+						DBMS_OUTPUT.PUT_LINE(v_prospectCName || ' ' || TRIM(v_prospectCYear) || ' ' || TRIM(v_prospectMake) || ' ' || TRIM(v_prospectTrim) || ' ' || :g_options);
 					ELSE
-						DBMS_OUTPUT.PUT_LINE(v_prospectCName || ' ' || TRIM(v_prospectCYear) || ' ' || TRIM(v_prospectMake) || ' ' || TRIM(v_prospectModel) || ' ' || TRIM(v_prospectTrim));
+						DBMS_OUTPUT.PUT_LINE(v_prospectCName || ' ' || TRIM(v_prospectCYear) || ' ' || TRIM(v_prospectMake) || ' ' || TRIM(v_prospectModel) || ' ' || TRIM(v_prospectTrim) || ' ' || :g_options);
 					END IF;	
 				ELSE
 					IF (v_prospectModel IS NULL) THEN
@@ -84,27 +117,6 @@ BEGIN
 					END IF;	
 				END IF;
 			END IF;
-			
-			-- Display section headding
-			/*DBMS_OUTPUT.PUT_LINE('Options: ');
-
-			-- Open the prospectCustomersOptions_cur cursor
-			OPEN prospectCustomersOptions_cur;
-				-- Loop through the results of the cursor and then display it to the console
-				LOOP
-					-- Fetch the results from the cursor into the prospect object variable
-					FETCH prospectCustomersOptions_cur INTO v_prospectOption;
-
-					-- Exit the loop when there is nothing found in the cursor
-					EXIT WHEN prospectCustomersOptions_cur%NOTFOUND;
-						DBMS_OUTPUT.PUT_LINE(CHR(9) || '- ' || TRIM(v_prospectOption.odesc));
-					-- End the loop
-					END LOOP;
-				-- Close the prospect List cursor
-				CLOSE prospectCustomersOptions_cur;
-
-				DBMS_OUTPUT.PUT_LINE(CHR(10));*/
-		-- End the loop
 		END LOOP;
 
 	-- Close the prospect List cursor
