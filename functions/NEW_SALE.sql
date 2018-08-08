@@ -40,49 +40,49 @@ BEGIN
    IF discount < 0
     THEN
 
-        RETURN -5;
+        RETURN -4;
     END IF;
     
    IF licfee < 0
     THEN
 
-        RETURN -6;
+        RETURN -5;
     END IF;
     
    IF commission < 0
     THEN
 
-        RETURN -7;
+        RETURN -6;
     END IF;
     
    IF tradeallow < 0
     THEN
 
-        RETURN -8;
+        RETURN -7;
     END IF;
     
    IF NOT REGEXP_LIKE(fire, 'yes|no')
     THEN
 
-        RETURN -9;
+        RETURN -8;
     END IF;
     
    IF NOT REGEXP_LIKE(collision, 'yes|no')
     THEN
 
-        RETURN -10;
+        RETURN -9;
     END IF;
     
    IF NOT REGEXP_LIKE(liability, 'yes|no')
     THEN
 
-        RETURN -11;
+        RETURN -10;
     END IF;
     
    IF NOT REGEXP_LIKE(property, 'yes|no')
     THEN
 
-        RETURN -12;
+        RETURN -11;
     END IF;
 
   INSERT INTO saleinv s (
