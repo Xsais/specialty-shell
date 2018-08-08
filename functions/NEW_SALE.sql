@@ -12,7 +12,7 @@
 CREATE OR REPLACE FUNCTION NEW_SALE
 (
     saleinv     saleinv.saleinv%TYPE,
-    cname       saleinv.cname%TYPE,
+    ccname       saleinv.cname%TYPE,
     salesman    saleinv.salesman%TYPE,
     saledate    saleinv.saledate%TYPE,
     serial      saleinv.serial%TYPE,
@@ -90,7 +90,8 @@ BEGIN
    SELECT COUNT(*)
         INTO v_ownedCount
         FROM car c
-        WHERE c.serial = serial;
+        WHERE c.serial = serial
+            AND c.cname != NULL;
         
    IF v_ownedCount != 0
         THEN
@@ -119,7 +120,7 @@ BEGIN
   	 )
   	VALUES (
   	  saleinv,
-  	  cname,
+  	  ccname,
   	  salesman,
   	  saledate,
   	  serial,
@@ -138,7 +139,7 @@ BEGIN
   	);
     
     UPDATE car c
-        SET c.cname = cname
+        SET c.cname = ccname
         WHERE c.serial = serial;
   
   RETURN 0;
@@ -147,9 +148,9 @@ EXCEPTION
     WHEN DUP_VAL_ON_INDEX THEN
 
          RETURN -2;
-    WHEN OTHERS THEN
+     WHEN OTHERS THEN
 
-    	RETURN -1;
+    	 RETURN -1;
 END;
 /
 /** OUTPUT:
