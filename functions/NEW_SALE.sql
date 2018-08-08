@@ -29,6 +29,8 @@ CREATE OR REPLACE FUNCTION NEW_SALE
 )
 RETURN SMALLINT
 AS
+
+    v_ownedCount NUMBER;
 BEGIN
 
    IF totalprice < 0
@@ -84,6 +86,11 @@ BEGIN
 
         RETURN -11;
     END IF;
+    
+   SELECT COUNT(*)
+        INTO v_ownedCount
+        FROM car c
+        WHERE c.serial = serial;
         
    IF v_ownedCount != 0
         THEN
