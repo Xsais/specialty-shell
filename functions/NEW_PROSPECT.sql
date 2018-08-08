@@ -11,7 +11,7 @@
 
 CREATE OR REPLACE FUNCTION NEW_PROSPECT
 (
-    ccname prospect.cname%TYPE,
+    cname prospect.cname%TYPE,
     make  prospect.make%TYPE,
     model prospect.model%TYPE DEFAULT NULL,
     cyear prospect.cyear%TYPE DEFAULT NULL,
@@ -33,7 +33,7 @@ BEGIN
        p.ocode
    )
   VALUES (
-     ccname,
+     cname,
      make,
      model,
      cyear,
