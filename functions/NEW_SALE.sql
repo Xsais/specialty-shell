@@ -16,16 +16,16 @@ CREATE OR REPLACE FUNCTION NEW_SALE
     salesman    saleinv.salesman%TYPE,
     saledate    saleinv.saledate%TYPE,
     serial      saleinv.serial%TYPE,
-    totalprice  saleinv.totalprice%TYPE,
-    discount    saleinv.discount%TYPE,
-    licfee      saleinv.licfee%TYPE,
-    commission  saleinv.commission%TYPE,
-    tradeserial saleinv.tradeserial%TYPE,
-    tradeallow  saleinv.tradeallow%TYPE,
-    fire        saleinv.fire%TYPE,
-    collision   saleinv.collision%TYPE,
-    liability   saleinv.liability%TYPE,
-    property    saleinv.property%TYPE
+    fire        saleinv.fire%TYPE        DEFAULT 'N',
+    collision   saleinv.collision%TYPE   DEFAULT 'N',
+    liability   saleinv.liability%TYPE   DEFAULT 'N',
+    property    saleinv.property%TYPE    DEFAULT 'N',
+    totalprice  saleinv.totalprice%TYPE  DEFAULT NULL,
+    discount    saleinv.discount%TYPE    DEFAULT NULL,
+    licfee      saleinv.licfee%TYPE      DEFAULT NULL,
+    commission  saleinv.commission%TYPE  DEFAULT NULL,
+    tradeserial saleinv.tradeserial%TYPE DEFAULT NULL,
+    tradeallow  saleinv.tradeallow%TYPE  DEFAULT NULL
 )
 RETURN SMALLINT
 AS
@@ -61,30 +61,6 @@ BEGIN
     THEN
 
         RETURN -7;
-    END IF;
-    
-   IF NOT REGEXP_LIKE(fire, 'yes|no')
-    THEN
-
-        RETURN -8;
-    END IF;
-    
-   IF NOT REGEXP_LIKE(collision, 'yes|no')
-    THEN
-
-        RETURN -9;
-    END IF;
-    
-   IF NOT REGEXP_LIKE(liability, 'yes|no')
-    THEN
-
-        RETURN -10;
-    END IF;
-    
-   IF NOT REGEXP_LIKE(property, 'yes|no')
-    THEN
-
-        RETURN -11;
     END IF;
     
    SELECT COUNT(*)
@@ -148,9 +124,9 @@ EXCEPTION
     WHEN DUP_VAL_ON_INDEX THEN
 
          RETURN -2;
-     WHEN OTHERS THEN
+     --WHEN OTHERS THEN
 
-    	 RETURN -1;
+    	 --RETURN -1;
 END;
 /
 /** OUTPUT:

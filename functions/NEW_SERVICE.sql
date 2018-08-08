@@ -15,8 +15,8 @@ CREATE OR REPLACE FUNCTION NEW_SERVICE
     serdate   servinv.serdate%TYPE,
     cname     servinv.cname%TYPE,
     serial    servinv.serial%TYPE,
-    partscost servinv.partscost%TYPE,
-    labourcost servinv.laborcost%TYPE
+    partscost servinv.partscost%TYPE DEFAULT 0,
+    labourcost servinv.laborcost%TYPE DEFAULT 0
 )
 RETURN SMALLINT
 AS

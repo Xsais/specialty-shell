@@ -11,13 +11,13 @@
 
 CREATE OR REPLACE FUNCTION NEW_PROSPECT
 (
-    cname prospect.cname%TYPE,
+    ccname prospect.cname%TYPE,
     make  prospect.make%TYPE,
-    model prospect.model%TYPE,
-    cyear prospect.cyear%TYPE,
-    color prospect.color%TYPE,
-    trim  prospect.trim%TYPE,
-    ocode prospect.ocode%TYPE
+    model prospect.model%TYPE DEFAULT NULL,
+    cyear prospect.cyear%TYPE DEFAULT NULL,
+    color prospect.color%TYPE DEFAULT NULL,
+    trim  prospect.trim%TYPE  DEFAULT NULL,
+    ocode prospect.ocode%TYPE DEFAULT NULL
 )
 RETURN BOOLEAN
 AS
@@ -33,7 +33,7 @@ BEGIN
        p.ocode
    )
   VALUES (
-     cname,
+     ccname,
      make,
      model,
      cyear,

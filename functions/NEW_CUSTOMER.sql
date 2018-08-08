@@ -9,14 +9,14 @@
  * * Description: Adds a new customer tto the database
 */
 
-CREATE OR replace FUNCTION NEW_CUSTOMER (
+CREATE OR REPLACE FUNCTION NEW_CUSTOMER (
 	cname  customer.cname%TYPE,
 	street customer.cstreet%TYPE,
 	city   customer.ccity%TYPE,
 	prov   customer.cprov%TYPE,
-	postal customer.cpostal%TYPE,
-	hphone customer.chphone%TYPE,
-	bphone customer.cbphone%TYPE
+	postal customer.cpostal%TYPE  DEFAULT NULL,
+	hphone customer.chphone%TYPE  DEFAULT NULL,
+	bphone customer.cbphone%TYPE  DEFAULT NULL
 )
 RETURN SMALLINT
 AS

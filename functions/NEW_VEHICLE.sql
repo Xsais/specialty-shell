@@ -12,19 +12,19 @@
 CREATE OR REPLACE FUNCTION NEW_VEHICLE
 (
     serial     car.serial%TYPE,
-    cname      car.cname%TYPE,
     make       car.make%TYPE,
     model      car.model%TYPE,
     cyear      car.cyear%TYPE,
     color      car.color%TYPE,
     trim       car.trim%TYPE,
     enginetype car.enginetype%TYPE,
-    purchinv   car.purchinv%TYPE,
-    purchdate  car.purchdate%TYPE,
-    purchfrom  car.purchfrom%TYPE,
-    purchcost  car.purchcost%TYPE,
-    freightcost car.freightcost%TYPE,
-    listprice  car.listprice%TYPE
+    cname      car.cname%TYPE        DEFAULT NULL,
+    purchinv   car.purchinv%TYPE     DEFAULT NULL,
+    purchdate  car.purchdate%TYPE    DEFAULT NULL,
+    purchfrom  car.purchfrom%TYPE    DEFAULT NULL,
+    purchcost  car.purchcost%TYPE    DEFAULT 0,
+    freightcost car.freightcost%TYPE DEFAULT 0,
+    listprice  car.listprice%TYPE    DEFAULT 0
 )
 RETURN SMALLINT
 AS
