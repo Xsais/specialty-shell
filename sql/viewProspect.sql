@@ -1,3 +1,5 @@
+SET SERVEROUTPUT ON;
+
 -- Prompt the user for a customer name
 ACCEPT p_customerName PROMPT 'Enter a Prospective Customers Name: '
 
@@ -11,6 +13,7 @@ DECLARE
 	v_prospectTrim prospect.trim%TYPE;
 	v_prospectOption options%ROWTYPE;
 	v_prospectCount NUMBER;
+	v_optionsCount NUMBER;
 
 	-- Cursor to store the prospect entries in the DB
 	CURSOR prospectiveCustomers_cur IS 
@@ -50,7 +53,6 @@ BEGIN
 
 	-- Open the prospectList cursor
 	OPEN prospectiveCustomers_cur;
-
 		-- Dispaly the number of cars Prospecting
 		DBMS_OUTPUT.PUT_LINE('Number of Cars Prospected: ' || v_prospectCount || CHR(10));
 
@@ -62,28 +64,46 @@ BEGIN
 			-- Exit the loop when there is nothing found in the cursor
 			EXIT WHEN prospectiveCustomers_cur%NOTFOUND;
 
+			-- Get the count of options
+			SELECT COUNT(ocode)
+			  INTO v_optionsCount
+			  FROM prospect
+			 WHERE TRIM(UPPER(cname)) = TRIM(UPPER('&p_customerName'))
+			   AND TRIM(UPPER(make)) = TRIM(UPPER(v_prospectMake))
+			   AND TRIM(UPPER(model)) = TRIM(UPPER(v_prospectModel))
+			   AND TRIM(UPPER(cyear)) = TRIM(UPPER(v_prospectCYear))
+			   AND TRIM(UPPER(color)) = TRIM(UPPER(v_prospectColor))
+			   AND TRIM(UPPER(trim)) = TRIM(UPPER(v_prospectTrim));
+
 			-- Display prospective car information
 			DBMS_OUTPUT.PUT_LINE('Prospective Car: ' || TRIM(v_prospectMake) || ' ' || TRIM(v_prospectModel) || ' (' || TRIM(v_prospectCYear) || ') ' || TRIM(v_prospectColor) || ' ' || TRIM(v_prospectTrim));
 
 			-- Display section headding
 			DBMS_OUTPUT.PUT_LINE('Options: ');
 
-			-- Open the prospectCustomersOptions_cur cursor
-			OPEN prospectCustomersOptions_cur;
-				-- Loop through the results of the cursor and then display it to the console
-				LOOP
-					-- Fetch the results from the cursor into the prospect object variable
-					FETCH prospectCustomersOptions_cur INTO v_prospectOption;
-
-					-- Exit the loop when there is nothing found in the cursor
-					EXIT WHEN prospectCustomersOptions_cur%NOTFOUND;
+			-- Check if the prospect has any car options
+			IF (v_optionsCount > 0) THEN
+				-- Open the prospectCustomersOptions_cur cursor
+				OPEN prospectCustomersOptions_cur;	
+					-- Loop through the results of the cursor and then display it to the console
+					LOOP
+						-- Fetch the results from the cursor into the prospect object variable
+						FETCH prospectCustomersOptions_cur INTO v_prospectOption;
+	
+						-- Exit the loop when there is nothing found in the cursor
+						EXIT WHEN prospectCustomersOptions_cur%NOTFOUND;					
+						-- Display options
 						DBMS_OUTPUT.PUT_LINE(CHR(9) || '- ' || TRIM(v_prospectOption.odesc));
 					-- End the loop
 					END LOOP;
+					
+					-- Formatting extra line
+					DBMS_OUTPUT.PUT_LINE(CHR(10));
 				-- Close the prospect List cursor
 				CLOSE prospectCustomersOptions_cur;
-
-				DBMS_OUTPUT.PUT_LINE(CHR(10));
+			ELSE
+				DBMS_OUTPUT.PUT_LINE(CHR(9) || '- No Options' || CHR(10));
+			END IF;
 		-- End the loop
 		END LOOP;
 
