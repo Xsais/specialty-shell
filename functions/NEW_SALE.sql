@@ -124,9 +124,9 @@ EXCEPTION
     WHEN DUP_VAL_ON_INDEX THEN
 
          RETURN -2;
-     --WHEN OTHERS THEN
+     WHEN OTHERS THEN
 
-    	 --RETURN -1;
+    	 RETURN -1;
 END;
 /
 /** OUTPUT:
