@@ -84,8 +84,14 @@ BEGIN
 
         RETURN -11;
     END IF;
+        
+   IF v_ownedCount != 0
+        THEN
+        
+            RETURN -12;
+    END IF;
 
-  INSERT INTO saleinv s (
+   INSERT INTO saleinv s (
   	     s.saleinv,
   	     s.cname,
   	     s.salesman,
@@ -123,6 +129,10 @@ BEGIN
   	  liability,
   	  property
   	);
+    
+    UPDATE car c
+        SET c.cname = cname
+        WHERE c.serial = serial;
   
   RETURN 0;
 EXCEPTION
