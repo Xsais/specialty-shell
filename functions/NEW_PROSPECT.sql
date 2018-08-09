@@ -19,7 +19,7 @@ CREATE OR REPLACE FUNCTION NEW_PROSPECT
     trim  prospect.trim%TYPE  DEFAULT NULL,
     ocode prospect.ocode%TYPE DEFAULT NULL
 )
-RETURN BOOLEAN
+RETURN SMALLINT
 AS
 BEGIN
     
@@ -42,13 +42,13 @@ BEGIN
      ocode
   );
                     
-  RETURN TRUE;
+  RETURN 0;
 EXCEPTION
 
     WHEN OTHERS
         THEN
-            
-            RETURN FALSE;
+
+            RETURN -1;
 END;
 /
 
