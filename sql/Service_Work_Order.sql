@@ -3,7 +3,8 @@
 
 -- Set Serveroutput and format and then console linesize
 SET SERVEROUTPUT ON FORMAT WRAPPED;
-SET LINESIZE 132
+SET LINESIZE 132;
+SET FEEDBACK OFF;
 
 -- Prompt the user for a service invoice number
 ACCEPT p_serviceInvoiceNumber PROMPT 'Enter a Service Invoice Number:'
@@ -56,7 +57,7 @@ BEGIN
 		ON si.serial = ca.serial
 	 WHERE TRIM(UPPER(si.servinv)) = TRIM(UPPER('&p_serviceInvoiceNumber'));
 	 
-	 -- Open the c_serviceWorkDesc cursor
+	-- Open the c_serviceWorkDesc cursor
 	OPEN c_serviceWorkDesc;
 		-- Loop through the results of the cursor and then add it to the workDescList
 		LOOP
@@ -94,7 +95,7 @@ BEGIN
 	CLOSE c_serviceWorkDesc;
 
 	-- Format the display of the output to display like report
-	DBMS_OUTPUT.PUT('-----------------------------------------------------------------------------------------------------------------------------------');
+	DBMS_OUTPUT.PUT(LPAD('-', 131, '-'));
 	DBMS_OUTPUT.PUT_LINE(CENTERSTRING('SPECALITY IMPORTS', 132));
 	DBMS_OUTPUT.PUT_LINE(CENTERSTRING('SERVICE WORK ORDER', 132));
 	DBMS_OUTPUT.PUT_LINE('');
@@ -110,11 +111,11 @@ BEGIN
 	DBMS_OUTPUT.PUT_LINE('');
 	DBMS_OUTPUT.PUT_LINE(LPAD('Telephone Work: ', 20) || RPAD(v_customerWorkPhone, 52, '_') || LPAD('Home: ', 8) || RPAD(TRIM(v_customerHomePhone), 51, '_'));
 	DBMS_OUTPUT.PUT_LINE('');
-	DBMS_OUTPUT.PUT_LINE('+---------------------------------------------------------------------------------------------------------------------------------+');
+	DBMS_OUTPUT.PUT_LINE(RPAD('+', 20, '-') || RPAD('+', 20, '-') || RPAD('+', 30, '-') || RPAD('+', 20, '-') || RPAD('+', 40, '-') || '+');
 	DBMS_OUTPUT.PUT_LINE(RPAD('| Serial Number', 20) || RPAD('| Make', 20) || RPAD('| Model', 30) || RPAD('| Year', 20) || RPAD('| Color', 40) || '|');
-	DBMS_OUTPUT.PUT_LINE('+---------------------------------------------------------------------------------------------------------------------------------+');
+	DBMS_OUTPUT.PUT_LINE(RPAD('+', 20, '-') || RPAD('+', 20, '-') || RPAD('+', 30, '-') || RPAD('+', 20, '-') || RPAD('+', 40, '-') || '+');
 	DBMS_OUTPUT.PUT_LINE(RPAD('| ' || TRIM(v_carSerial), 20) || RPAD('| ' || TRIM(v_carMake), 20) || RPAD('| ' || TRIM(v_carModel), 30) || RPAD('| ' || TRIM(v_carYear), 20) || RPAD('| ' || TRIM(v_carColor), 40) || '|');
-	DBMS_OUTPUT.PUT_LINE('+---------------------------------------------------------------------------------------------------------------------------------+');
+	DBMS_OUTPUT.PUT_LINE(RPAD('+', 20, '-') || RPAD('+', 20, '-') || RPAD('+', 30, '-') || RPAD('+', 20, '-') || RPAD('+', 40, '-') || '+');
 	DBMS_OUTPUT.PUT_LINE('');
 	DBMS_OUTPUT.PUT_LINE(LPAD('Work to be Done: ', 20) || RPAD(v_workDescList, 904, '_'));
 	DBMS_OUTPUT.PUT_LINE('');
@@ -127,9 +128,13 @@ BEGIN
 
 -- Handle Exception
 EXCEPTION
+	-- Handle when no data is found
+	WHEN NO_DATA_FOUND THEN
+		DBMS_OUTPUT.PUT_LINE('Oops... That looks to be an invalid Service Invoice Number as it cannot be found in the database.  Please try again.');
+	
 	-- Handle when e_no_data_entry thrown/raised
 	WHEN e_no_data_entry THEN
 		-- Display error message
-		DBMS_OUTPUT.PUT_LINE('Oops... You must enter a Service Invoice Number to view the information.  Please try again.');
+		DBMS_OUTPUT.PUT_LINE('Oops... You must enter a Service Invoice Number to view the Service Work Order.  Please try again.');
 END;
 /
