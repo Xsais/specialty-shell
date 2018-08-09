@@ -22,19 +22,19 @@ RETURN SMALLINT
 AS
 BEGIN
 
-    IF NOT REGEXP_LIKE(postal, '(\d{5}([ \-]\d{4})?)|([ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1}[ \-]\d{1}[A-Z]{1}\d{1})')
+    IF NOT REGEXP_LIKE(LOWER(postal), '[a-z]\d[a-z][ \-]?\d[a-z]\d')
         THEN
 
             RETURN -3;
     END IF;
 
-    IF NOT REGEXP_LIKE(hphone, '\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*')
+    IF NOT REGEXP_LIKE(hphone, '\(\d{3}\)\d{3}-\d{4}')
         THEN
 
             RETURN -4;
     END IF;
 
-    IF NOT REGEXP_LIKE(bphone, '\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*')
+    IF NOT REGEXP_LIKE(bphone, '\(\d{3}\)\d{3}-\d{4}')
         THEN
 
             RETURN -5;
