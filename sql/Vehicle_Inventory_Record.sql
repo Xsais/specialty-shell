@@ -86,6 +86,10 @@ BEGIN
 	
 -- Handle Exception
 EXCEPTION
+	-- Handle when no data is found
+	WHEN NO_DATA_FOUND THEN
+		DBMS_OUTPUT.PUT_LINE('Oops... That looks to be an invalid Car Serial Number as it cannot be found in the database.  Please try again.');
+	
 	-- Handle when e_no_data_entry thrown/raised
 	WHEN e_no_data_entry THEN
 		-- Display error message
