@@ -49,23 +49,23 @@ BEGIN
 	 WHERE TRIM(UPPER(ca.serial)) = TRIM(UPPER('&p_serialNumber'));	
 
 	-- Format the display of the output to display like report
-	DBMS_OUTPUT.PUT('-----------------------------------------------------------------------------------------------------------------------------------');
+	DBMS_OUTPUT.PUT(LPAD('-', 131, '-'));
 	DBMS_OUTPUT.PUT_LINE(CENTERSTRING('Vehicle Inventory Record', 132));
 	DBMS_OUTPUT.PUT_LINE('');
-	DBMS_OUTPUT.PUT_LINE('+-----------------------+-----------------------+-----------------------+---------+-----------------------+-----------------------+');
+	DBMS_OUTPUT.PUT_LINE(RPAD('+', 24, '-') || RPAD('+', 24, '-') || RPAD('+', 24, '-') || RPAD('+', 10, '-') || RPAD('+', 24, '-') || RPAD('+', 24, '-') || '+');
 	DBMS_OUTPUT.PUT_LINE(RPAD('| Serial No.', 24) || RPAD('| Make', 24) || RPAD('| Model', 24) || RPAD('| Year', 10) || RPAD('| Exterior Color', 24) || RPAD('| Trim', 24) || '|');
-	DBMS_OUTPUT.PUT_LINE('+-----------------------+-----------------------+-----------------------+---------+-----------------------+-----------------------+');
+	DBMS_OUTPUT.PUT_LINE(RPAD('+', 24, '-') || RPAD('+', 24, '-') || RPAD('+', 24, '-') || RPAD('+', 10, '-') || RPAD('+', 24, '-') || RPAD('+', 24, '-') || '+');
 	DBMS_OUTPUT.PUT_LINE(RPAD('| ' || TRIM(v_carSerial), 24) || RPAD('| ' || TRIM(v_carMake), 24) || RPAD('| ' || TRIM(v_carModel), 24) || RPAD('| ' || TRIM(v_carYear), 10) || RPAD('| ' || TRIM(v_carColor), 24) || RPAD('| ' || TRIM(v_carTrim), 24) || '|');
-	DBMS_OUTPUT.PUT_LINE('+-----------------------+-----------------------+-----------------------+---------+-----------------------+-----------------------+');
+	DBMS_OUTPUT.PUT_LINE(RPAD('+', 24, '-') || RPAD('+', 24, '-') || RPAD('+', 24, '-') || RPAD('+', 10, '-') || RPAD('+', 24, '-') || RPAD('+', 24, '-') || '+');
 	DBMS_OUTPUT.PUT_LINE(RPAD('| Purchased From', 24) || RPAD('| Purch. Inv. No.', 24) || RPAD('| Purchase Date', 24) || RPAD('|', 10) || RPAD('| Purchase Cost', 24) || RPAD('| List Base Price', 24) || '|');
-	DBMS_OUTPUT.PUT_LINE('+-----------------------+-----------------------+-----------------------+         +-----------------------+-----------------------+');
+	DBMS_OUTPUT.PUT_LINE(RPAD('+', 24, '-') || RPAD('+', 24, '-') || RPAD('+', 24, '-') || RPAD('+', 10, ' ') || RPAD('+', 24, '-') || RPAD('+', 24, '-') || '+');
 	DBMS_OUTPUT.PUT_LINE(RPAD('| ' || TRIM(v_carPurchasedFrom), 24) || RPAD('| ' || TRIM(v_carPurchInvNo), 24) || RPAD('| ' || TRIM(v_carPurchaseDate), 24) || RPAD('|', 10) || RPAD('| ' || TO_CHAR(TRIM(v_carPurchaseCost), '$99,999.99'), 24) || RPAD('| ' || TO_CHAR(TRIM(v_carListPrice), '$99,999.99'), 24) || '|');
-	DBMS_OUTPUT.PUT_LINE('+-----------------------+-----------------------+-----------------------+         +-----------------------+-----------------------+');
+	DBMS_OUTPUT.PUT_LINE(RPAD('+', 24, '-') || RPAD('+', 24, '-') || RPAD('+', 24, '-') || RPAD('+', 10, ' ') || RPAD('+', 24, '-') || RPAD('+', 24, '-') || '+');
 	DBMS_OUTPUT.PUT_LINE('');
 	DBMS_OUTPUT.PUT_LINE(CENTERSTRING('Optional Equiptment and Accessories - Factory', 132));
-	DBMS_OUTPUT.PUT_LINE('+-----------------------+---------------------------------------------------------------------------------+-----------------------+');
+	DBMS_OUTPUT.PUT_LINE(RPAD('+', 24, '-') || RPAD('+', 82, '-') || RPAD('+', 24, '-') || '+');
 	DBMS_OUTPUT.PUT_LINE(RPAD('| Code', 24) || RPAD('| Description', 82) || RPAD('| List Price', 24) || '|');
-	DBMS_OUTPUT.PUT_LINE('+-----------------------+---------------------------------------------------------------------------------+-----------------------+');
+	DBMS_OUTPUT.PUT_LINE(RPAD('+', 24, '-') || RPAD('+', 82, '-') || RPAD('+', 24, '-') || '+');
 	
 	-- Open the c_baseOptions cursor
 	OPEN c_baseOptions;
@@ -77,8 +77,8 @@ BEGIN
 				EXIT WHEN c_baseOptions%NOTFOUND;
 				
 				-- Display the data to the console
-				DBMS_OUTPUT.PUT_LINE(RPAD('| ' || TRIM(v_carOption.ocode), 24) || RPAD('| ' || TRIM(v_carOption.odesc), 82) || RPAD('| ' ||TO_CHAR(TRIM(v_carOption.olist), '$99,999.99'), 24) || '|');
-				DBMS_OUTPUT.PUT_LINE('+-----------------------+---------------------------------------------------------------------------------+-----------------------+');
+				DBMS_OUTPUT.PUT_LINE(RPAD('| ' || TRIM(v_carOption.ocode), 24) || RPAD('| ' || TRIM(v_carOption.odesc), 82) || RPAD('| ' || TO_CHAR(TRIM(v_carOption.olist), '$99,999.99'), 24) || '|');
+				DBMS_OUTPUT.PUT_LINE(RPAD('+', 24, '-') || RPAD('+', 82, '-') || RPAD('+', 24, '-') || '+');
 		-- End the loop
 		END LOOP;
 	-- Close the car options cursor
@@ -89,6 +89,6 @@ EXCEPTION
 	-- Handle when e_no_data_entry thrown/raised
 	WHEN e_no_data_entry THEN
 		-- Display error message
-		DBMS_OUTPUT.PUT_LINE('Oops... You must enter a Car Serial Number to view the information.  Please try again.');
+		DBMS_OUTPUT.PUT_LINE('Oops... You must enter a Car Serial Number to view the Vehicle Inventory Record.  Please try again.');
 END;
 /
