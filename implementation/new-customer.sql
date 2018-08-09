@@ -41,10 +41,9 @@ BEGIN
             THEN
 
                 RAISE incorrect_phone;
-        WHEN v_errorCode = -1
-            THEN
+        ELSE
 
-                RAISE internal_exception;
+            RAISE internal_exception;
     END CASE;
 
     COMMIT WORK;
