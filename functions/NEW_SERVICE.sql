@@ -54,7 +54,7 @@ BEGIN
 	RETURN -7;
   END IF;
 
-  IF v_serdate > SYSDATE OR serdate < '1885/01/01'
+  IF v_serdate > SYSDATE OR saledate < '1885/01/01'
 	  THEN
 
 		RETURN -8;

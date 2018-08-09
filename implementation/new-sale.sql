@@ -29,6 +29,13 @@ DECLARE
     invalid_cost EXCEPTION;
     sale_exits EXCEPTION;
     internal_exception EXCEPTION;
+    invalid_cname EXCEPTION;
+    invalid_man EXCEPTION;
+    invalid_date EXCEPTION;
+    invalid_trade EXCEPTION;
+    invalid_boolean EXCEPTION;
+    invalid_sale EXCEPTION;
+    invalid_serial EXCEPTION;
 BEGIN
 
     DBMS_OUTPUT.PUT_LINE(CHR(10));
@@ -43,10 +50,38 @@ BEGIN
             THEN
 
                 RAISE sale_exits;
-        WHEN v_errorCode = -3 OR v_errorCode = -4 OR v_errorCode = -5
+        WHEN v_errorCode = -3 OR v_errorCode = -4 OR v_errorCode = -5 OR v_errorCode = -6 OR v_errorCode = -7
             THEN
 
                 RAISE invalid_cost;
+        WHEN v_errorCode = -13 OR v_errorCode = -22
+        	THEN
+
+        		RAISE invalid_cname;
+        WHEN v_errorCode = -14
+        	THEN
+
+        		RAISE invalid_man;
+        WHEN v_errorCode = -15
+        	THEN
+
+        		RAISE invalid_date;
+        WHEN v_errorCode = -16
+        	THEN
+
+        		RAISE invalid_trade;
+        WHEN v_errorCode = -17 OR v_errorCode = -18 OR v_errorCode = -19 OR v_errorCode = -20
+        	THEN
+
+        		RAISE invalid_boolean;
+        WHEN v_errorCode = -23
+        	THEN
+
+        		RAISE invalid_sae;
+        WHEN v_errorCode = -24
+        	THEN
+
+        		RAISE invalid_date;
         ELSE
 
             RAISE internal_exception;
@@ -59,6 +94,31 @@ EXCEPTION
         THEN
 
             DBMS_OUTPUT.PUT_LINE('The provided sale invoice number already exists');
+    WHEN invalid_cname
+        THEN
+
+            DBMS_OUTPUT.PUT_LINE('The customer does not exist');
+    WHEN invalid_man
+        THEN
+
+            DBMS_OUTPUT.PUT_LINE('The employee does not exist');
+    WHEN invalid_date
+        THEN
+
+            DBMS_OUTPUT.PUT_LINE('The date must be greater than (1885-01-01) and less than ('
+            || TO_CHAR(SYSDATE, 'YYYY-MM-DD') || ')');
+    WHEN invalid_trade
+        THEN
+
+            DBMS_OUTPUT.PUT_LINE('The trading car was not found');
+    WHEN invalid_boolean
+        THEN
+
+            DBMS_OUTPUT.PUT_LINE('The options must be either Y or N');
+    WHEN invalid_serial
+        THEN
+
+            DBMS_OUTPUT.PUT_LINE('The selling car was not found');
     WHEN invalid_cost
         THEN
 

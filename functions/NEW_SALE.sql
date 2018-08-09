@@ -13,14 +13,14 @@ CREATE OR REPLACE FUNCTION NEW_SALE
 (
     saleinv     saleinv.saleinv%TYPE,
     ccname      saleinv.cname%TYPE,
-    salesman    saleinv.salesman%TYPE,
-    saledate    CHAR,
-    serial      saleinv.serial%TYPE,
+    csalesman    saleinv.salesman%TYPE,
+    csaledate    CHAR,
+    cserial      saleinv.serial%TYPE,
     totalprice  saleinv.totalprice%TYPE  DEFAULT NULL,
     discount    saleinv.discount%TYPE    DEFAULT NULL,
     licfee      saleinv.licfee%TYPE      DEFAULT NULL,
     commission  saleinv.commission%TYPE  DEFAULT NULL,
-    tradeserial saleinv.tradeserial%TYPE DEFAULT NULL,
+    ctradeserial saleinv.tradeserial%TYPE DEFAULT NULL,
     tradeallow  saleinv.tradeallow%TYPE  DEFAULT NULL,
 	fire        saleinv.fire%TYPE        DEFAULT 'N',
 	collision   saleinv.collision%TYPE   DEFAULT 'N',
@@ -30,50 +30,154 @@ CREATE OR REPLACE FUNCTION NEW_SALE
 RETURN SMALLINT
 AS
 
-    v_ownedCount NUMBER;
+    v_count NUMBER;
+  	v_serdate DATE := TO_DATE(csaledate, 'YYYY-MM-DD');
 BEGIN
 
-   IF totalprice < 0
+  IF saleinv IS NULL
+  THEN
+
+	RETURN -21;
+  END IF;
+
+  IF ccname IS NULL
+  THEN
+
+	RETURN -22;
+  END IF;
+
+  IF csalesman IS NULL
+  THEN
+
+	RETURN -23;
+  END IF;
+
+  IF csaledate IS NULL
+  THEN
+
+	RETURN -24;
+  END IF;
+
+  SELECT COUNT(*)
+	  INTO v_count
+  FROM car c
+  WHERE c.serial = cserial;
+
+  DBMS_OUTPUT.PUT_LINE(v_count);
+
+  IF cserial IS NULL OR v_count = 0
+  THEN
+
+	RETURN -12;
+  END IF;
+
+  SELECT COUNT(*)
+	  INTO v_count
+  FROM car c
+  WHERE c.serial = cserial
+	 AND cname != NULL;
+
+  IF  v_count = 0
+  THEN
+
+	RETURN -12;
+  END IF;
+
+  IF totalprice IS NOT NULL AND totalprice < 0
     THEN
 
         RETURN -3;
     END IF;
     
-   IF discount < 0
+   IF discount IS NOT NULL AND discount < 0
     THEN
 
         RETURN -4;
     END IF;
     
-   IF licfee < 0
+   IF licfee IS NOT NULL AND licfee < 0
     THEN
 
         RETURN -5;
     END IF;
     
-   IF commission < 0
+   IF commission IS NOT NULL AND commission < 0
     THEN
 
         RETURN -6;
     END IF;
     
-   IF tradeallow < 0
+   IF tradeallow IS NOT NULL AND tradeallow < 0
     THEN
 
         RETURN -7;
     END IF;
-    
-   SELECT COUNT(*)
-        INTO v_ownedCount
-        FROM car c
-        WHERE c.serial = serial
-            AND c.cname != NULL;
-        
-   IF v_ownedCount != 0
-        THEN
-        
-            RETURN -12;
-    END IF;
+
+  SELECT COUNT(*)
+	  INTO v_count
+  FROM customer c
+  WHERE c.cname = ccname;
+
+  IF v_count = 0
+  THEN
+
+	RETURN -13;
+  END IF;
+
+  SELECT COUNT(*)
+	  INTO v_count
+  FROM employee e
+  WHERE e.empname = csalesman;
+
+  IF v_count = 0
+  THEN
+
+	RETURN -14;
+  END IF;
+
+  IF v_serdate > SYSDATE OR csaledate < '1885/01/01'
+  THEN
+
+	RETURN -15;
+  END IF;
+
+  IF ctradeserial IS NOT NULL
+	THEN
+  SELECT COUNT(*)
+	  INTO v_count
+  FROM car c
+  WHERE c.serial = ctradeserial;
+
+  IF v_count = 0
+  THEN
+
+	RETURN -16;
+  END IF;
+	  END IF;
+
+  IF fire IS NOT NULL AND UPPER(fire) NOT IN ('Y', 'N')
+  THEN
+
+	RETURN -17;
+  END IF;
+
+  IF collision IS NOT NULL AND UPPER(collision) NOT IN ('Y', 'N')
+  THEN
+
+	RETURN -18;
+  END IF;
+
+  IF liability IS NOT NULL AND UPPER(liability) NOT IN ('Y', 'N')
+  THEN
+
+	RETURN -19;
+  END IF;
+
+  IF property IS NOT NULL AND UPPER(property) NOT IN ('Y', 'N')
+  THEN
+
+	RETURN -20;
+  END IF;
 
    INSERT INTO saleinv s (
   	     s.saleinv,
@@ -97,16 +201,16 @@ BEGIN
   	VALUES (
   	  saleinv,
   	  ccname,
-  	  salesman,
-	  TO_DATE(saledate, 'YYYY-MM-DD'),
-  	  serial,
+  	  csalesman,
+	  v_serdate,
+	  cserial,
   	  totalprice,
   	  discount,
   	  totalprice - discount,
       0.13 * (totalprice - discount),
   	  licfee,
   	  commission,
-  	  tradeserial,
+  	  ctradeserial,
   	  tradeallow,
   	  fire,
   	  collision,
