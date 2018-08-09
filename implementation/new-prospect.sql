@@ -18,6 +18,8 @@ DECLARE
 
     prospect_exits EXCEPTION;
     internal_exception EXCEPTION;
+    invalid_make EXCEPTION;
+    invalid_ocode EXCEPTION;
 BEGIN
 
     DBMS_OUTPUT.PUT_LINE(CHR(10));
@@ -32,6 +34,14 @@ BEGIN
             THEN
 
                 RAISE prospect_exits;
+        WHEN v_errorCedo = -3
+            THEN
+
+                RAISE invalid_make;
+        WHEN v_errorCedo = -4
+            THEN
+            
+                RAISE invalid_ocode;
         ELSE
 
             RAISE internal_exception;
@@ -44,6 +54,14 @@ EXCEPTION
         THEN
         
             DBMS_OUTPUT.PUT_LINE('The desired prospect already exists');
+    WHEN invalid_make
+        THEN
+        
+            DBMS_OUTPUT.PUT_LINE('The entered make was not valid');
+    WHEN invalid_ocode
+        THEN
+        
+            DBMS_OUTPUT.PUT_LINE('The entered option was not found');
     WHEN internal_exception
         THEN
 
