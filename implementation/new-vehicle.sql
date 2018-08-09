@@ -21,7 +21,7 @@ ACCEPT p_listprice PROMPT '     Enter the priced in which th car is listed: ';
 
 DECLARE
 
-    v_errorCode SMALLINT := NEW_VEHICLE('&p_serial', '&p_make', '&p_cyear', '&p_color', '&p_trim', '&p_engine', '&p_cname', '&p_purchinv', '&p_purchdate', '&p_purchfrom', '&p_purchcost', '&p_freightcost', '&p_listprice');
+    v_errorCode SMALLINT := NEW_VEHICLE('&p_serial', '&p_make', '&p_model' '&p_cyear', '&p_color', '&p_trim', '&p_engine', '&p_cname', '&p_purchinv', '&p_purchdate', '&p_purchfrom', '&p_purchcost', '&p_freightcost', '&p_listprice');
 
     invalid_cost EXCEPTION;
     vehcile_exits EXCEPTION;
