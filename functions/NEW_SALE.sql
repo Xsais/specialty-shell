@@ -16,16 +16,16 @@ CREATE OR REPLACE FUNCTION NEW_SALE
     salesman    saleinv.salesman%TYPE,
     saledate    saleinv.saledate%TYPE,
     serial      saleinv.serial%TYPE,
-    fire        saleinv.fire%TYPE        DEFAULT 'N',
-    collision   saleinv.collision%TYPE   DEFAULT 'N',
-    liability   saleinv.liability%TYPE   DEFAULT 'N',
-    property    saleinv.property%TYPE    DEFAULT 'N',
     totalprice  saleinv.totalprice%TYPE  DEFAULT NULL,
     discount    saleinv.discount%TYPE    DEFAULT NULL,
     licfee      saleinv.licfee%TYPE      DEFAULT NULL,
     commission  saleinv.commission%TYPE  DEFAULT NULL,
     tradeserial saleinv.tradeserial%TYPE DEFAULT NULL,
-    tradeallow  saleinv.tradeallow%TYPE  DEFAULT NULL
+    tradeallow  saleinv.tradeallow%TYPE  DEFAULT NULL,
+	fire        saleinv.fire%TYPE        DEFAULT 'N',
+	collision   saleinv.collision%TYPE   DEFAULT 'N',
+	liability   saleinv.liability%TYPE   DEFAULT 'N',
+	property    saleinv.property%TYPE    DEFAULT 'N'
 )
 RETURN SMALLINT
 AS
