@@ -55,7 +55,7 @@ EXCEPTION
     WHEN vehcile_exits
         THEN
         
-            DBMS_OUTPUT.PUT_LINE('A vehcile with that serial number already exists');
+            DBMS_OUTPUT.PUT_LINE('A vehicle with that serial number already exists');
     WHEN invalid_cost
         THEN
         

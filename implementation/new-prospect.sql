@@ -5,7 +5,7 @@ SET FEEDBACK OFF;
 PROMPT Enter the information bellow to insert a new vehicle;
 PROMPT;
 ACCEPT p_cname PROMPT    '     Enter the customers name: ';
-ACCEPT p_make PROMPT     '     Enteer the customers desired make: ';
+ACCEPT p_make PROMPT     '     Enter the customers desired make: ';
 ACCEPT p_model PROMPT    '     Enter the customers desired model: ';
 ACCEPT p_cyear PROMPT    '     Enter the customers desired year: ';
 ACCEPT p_color PROMPT    '     Enter the customers desired color: ';
