@@ -20,21 +20,48 @@ CREATE OR REPLACE FUNCTION NEW_CUSTOMER (
 )
 RETURN SMALLINT
 AS
+
+  v_count SMALLINT;
 BEGIN
 
-    IF NOT REGEXP_LIKE(LOWER(postal), '[a-z]\d[a-z][ \-]?\d[a-z]\d')
+ 	IF cname IS NULL
+	  THEN
+
+	  	RETURN -6;
+	END IF;
+
+  IF street IS NULL
+  THEN
+
+	RETURN -7;
+  END IF;
+
+  IF city IS NULL
+  THEN
+
+	RETURN -8;
+  END IF;
+
+  IF prov IS NULL
+  THEN
+
+	RETURN -9;
+  END IF;
+
+
+  IF NOT REGEXP_LIKE(LOWER(postal), '[a-z]\d[a-z][ \-]?\d[a-z]\d')
         THEN
 
             RETURN -3;
     END IF;
 
-    IF NOT REGEXP_LIKE(hphone, '\(\d{3}\)\d{3}-\d{4}')
+    IF NOT hphone IS NOT NULL AND REGEXP_LIKE(hphone, '\(\d{3}\)\d{3}-\d{4}')
         THEN
 
             RETURN -4;
     END IF;
 
-    IF NOT REGEXP_LIKE(bphone, '\(\d{3}\)\d{3}-\d{4}')
+    IF NOT bphone IS NOT NULL AND REGEXP_LIKE(bphone, '\(\d{3}\)\d{3}-\d{4}')
         THEN
 
             RETURN -5;

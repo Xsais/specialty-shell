@@ -20,6 +20,10 @@ DECLARE
     incorrect_postal EXCEPTION;
     incorrect_phone EXCEPTION;
     internal_exception EXCEPTION;
+    incorrect_street EXCEPTION;
+    incorrect_city EXCEPTION;
+    incorrect_prov EXCEPTION;
+    customer_blank EXCEPTION;
 BEGIN
 
     DBMS_OUTPUT.PUT_LINE(CHR(10));
@@ -34,10 +38,26 @@ BEGIN
             THEN
 
                 RAISE customer_exits;
+        WHEN v_errorCode = -6
+        	THEN
+
+        		RAISE customer_blank;
         WHEN v_errorCode = -3
             THEN
 
                 RAISE incorrect_postal;
+        WHEN v_errorCode = -7
+        	THEN
+
+        		RAISE incorrect_street;
+        WHEN v_errorCode = -8
+        	THEN
+
+        		RAISE incorrect_city;
+        WHEN v_errorCode = -9
+        	THEN
+
+        		RAISE incorrect_prov;
         WHEN v_errorCode = -4 OR v_errorCode = -5
             THEN
 
@@ -58,6 +78,22 @@ EXCEPTION
         THEN
 
             DBMS_OUTPUT.PUT_LINE('Invalid postal code, must be in the format ''V5V V5V''');
+    WHEN customer_blank
+    	THEN
+
+    		DBMS_OUTPUT.PUT_LINE('The customer street must not be blank');
+    WHEN incorrect_street
+        THEN
+
+            DBMS_OUTPUT.PUT_LINE('The street must not be blank');
+    WHEN incorrect_prov
+        THEN
+
+            DBMS_OUTPUT.PUT_LINE('The province must not be blank');
+    WHEN incorrect_city
+        THEN
+
+            DBMS_OUTPUT.PUT_LINE('The city must be not blank');
     WHEN incorrect_phone
         THEN
 
