@@ -61,23 +61,10 @@ BEGIN
   SELECT COUNT(*)
 	  INTO v_count
   FROM car c
-  WHERE c.serial = cserial;
-
-  DBMS_OUTPUT.PUT_LINE(v_count);
+  WHERE c.serial = cserial
+	AND c.cname IS NULL;
 
   IF cserial IS NULL OR v_count = 0
-  THEN
-
-	RETURN -12;
-  END IF;
-
-  SELECT COUNT(*)
-	  INTO v_count
-  FROM car c
-  WHERE c.serial = cserial
-	 AND cname != NULL;
-
-  IF  v_count = 0
   THEN
 
 	RETURN -12;
