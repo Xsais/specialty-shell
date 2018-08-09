@@ -34,11 +34,11 @@ BEGIN
             THEN
 
                 RAISE prospect_exits;
-        WHEN v_errorCedo = -3
+        WHEN v_errorCode = -3
             THEN
 
                 RAISE invalid_make;
-        WHEN v_errorCedo = -4
+        WHEN v_errorCode = -4
             THEN
             
                 RAISE invalid_ocode;
