@@ -4,13 +4,13 @@ SET FEEDBACK OFF;
 
 PROMPT Enter the information bellow to insert a new vehicle;
 PROMPT;
-ACCEPT p_servinv PROMPT   '     Enter the invoice option of the service: ';
-ACCEPT p_servdate PROMPT     '     Enter the date of the service: ';
-ACCEPT p_cname PROMPT    '     Enter the customer that requested the service: ';
-ACCEPT p_serial PROMPT    '     Enter the serial number for the car serviced: ';
-ACCEPT p_workdesc PROMPT    '     Enter the description of the work did: ';
-ACCEPT p_partscost PROMPT     '     Enter the total cost of the parts used for the service: ';
-ACCEPT p_labourcost PROMPT   '     Enter the total cost fo r the labour for the service: ';
+ACCEPT p_servinv PROMPT    '     Enter the invoice option of the service: ';
+ACCEPT p_servdate PROMPT   '     Enter the date of the service: ';
+ACCEPT p_cname PROMPT      '     Enter the customer that requested the service: ';
+ACCEPT p_serial PROMPT     '     Enter the serial number for the car serviced: ';
+ACCEPT p_workdesc PROMPT   '     Enter the description of the work did: ';
+ACCEPT p_partscost PROMPT  '     Enter the total cost of the parts used for the service: ';
+ACCEPT p_labourcost PROMPT '     Enter the total cost fo r the labour for the service: ';
 
 DECLARE
 
