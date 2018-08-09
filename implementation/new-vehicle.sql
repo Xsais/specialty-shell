@@ -21,6 +21,10 @@ ACCEPT p_listprice PROMPT '     Enter the priced in which th car is listed: ';
 DECLARE
 
     v_errorCode SMALLINT := NEW_VEHICLE('&p_serial', '&p_make', '&p_cyear', '&p_color', '&p_trim', '&p_engine', '&p_cname', '&p_purchinv', '&p_purchdate', '&p_purchfrom', '&p_purchcost', '&p_freightcost', '&p_listprice');
+
+    invalid_cost EXCEPTION;
+    vehcile_exits EXCEPTION;
+    internal_exception EXCEPTION;
 BEGIN
 
     DBMS_OUTPUT.PUT_LINE(CHR(10));
@@ -31,8 +35,34 @@ BEGIN
             THEN
 
                 DBMS_OUTPUT.PUT_LINE('The car with serial &p_serial was inserted into the database');
+        WHEN v_errorCode = -2
+            THEN
+
+                RAISE vehcile_exits;
+        WHEN v_errorCode = -3 OR v_errorCode = -4 OR v_errorCode = -5
+            THEN
+            
+                RAISE invalid_cost;
+        ELSE
+
+            RAISE internal_exception;
     END CASE;
 
     COMMIT WORK;
+EXCEPTION
+    
+    WHEN vehcile_exits
+        THEN
+        
+            DBMS_OUTPUT.PUT_LINE('A vehcile with that serial number already exists');
+    WHEN invalid_cost
+        THEN
+        
+            DBMS_OUTPUT.PUT_LINE('Invalid number, cost must be greater or equal to zero');
+    WHEN internal_exception
+        THEN
+
+            DBMS_OUTPUT.PUT_LINE('Internal server error, please contact the server admin'
+                                 || CHR(10) || CHR(10) || CHR(9) || 'Error code: NV-' || v_errorCode);
 END;
 /
