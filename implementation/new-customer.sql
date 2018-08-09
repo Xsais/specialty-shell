@@ -1,5 +1,6 @@
 SET SERVEROUTPUT ON;
-SET VERIFY OFF
+SET VERIFY OFF;
+SET FEEDBACK OFF;
 
 PROMPT Enter the information bellow to insert a new customer;
 PROMPT;
