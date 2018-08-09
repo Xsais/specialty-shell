@@ -1,3 +1,6 @@
+-- James Grau
+-- August 9, 2018
+
 -- Set Serveroutput and format and then console linesize
 SET SERVEROUTPUT ON FORMAT WRAPPED;
 SET LINESIZE 132;
