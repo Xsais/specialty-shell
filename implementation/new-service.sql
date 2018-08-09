@@ -18,6 +18,10 @@ DECLARE
 
     invalid_cost EXCEPTION;
     service_exits EXCEPTION;
+    no_customer EXCEPTION;
+    no_car EXCEPTION;
+    invalid_work ExCEPTION;
+    not_opened EXCEPTION;
     internal_exception EXCEPTION;
 BEGIN
 
@@ -33,10 +37,26 @@ BEGIN
             THEN
 
                 RAISE service_exits;
-        WHEN v_errorCode = -3 OR v_errorCode = -4 OR v_errorCode = -5
+        WHEN v_errorCode = -3 OR v_errorCode = -4
             THEN
             
                 RAISE invalid_cost;
+        WHEN v_errorCode = -5
+            THEN
+
+                RAISE no_customer;
+        WHEN v_errorCode = -6
+            THEN
+
+                RAISE no_car;
+        WHEN v_errorCode = -7
+            THEN
+
+                RAISE invalid_work;
+        WHEN v_errorCode = -8
+            THEN
+
+                RAISE not_opened;
         ELSE
 
             RAISE internal_exception;
@@ -48,7 +68,24 @@ EXCEPTION
     WHEN service_exits
         THEN
         
+            DBMS_OUTPUT.PUT_LINE('The service already exists');
+    WHEN no_customer
+        THEN
+
+            DBMS_OUTPUT.PUT_LINE('The entered customer does not exist');
+    WHEN no_car
+        THEN
+
             DBMS_OUTPUT.PUT_LINE('The provided service invoice number already exists');
+    WHEN invalid_work
+        THEN
+
+            DBMS_OUTPUT.PUT_LINE('The invoice needs a work description');
+    WHEN not_opened
+        THEN
+
+            DBMS_OUTPUT.PUT_LINE('The date must be greater than (1885-01-01) and less than ('
+            || TO_CHAR(SYSDATE, 'YYYY-MM-DD') || ')');
     WHEN invalid_cost
         THEN
         
