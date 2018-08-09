@@ -61,7 +61,7 @@ EXCEPTION
     WHEN incorrect_phone
         THEN
 
-            DBMS_OUTPUT.PUT_LINE('Invalid phone number, must be in the format ''123-456-7890''');
+            DBMS_OUTPUT.PUT_LINE('Invalid phone number, must be in the format ''(000)000-0000''');
     WHEN internal_exception
         THEN
 
