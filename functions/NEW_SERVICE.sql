@@ -12,7 +12,7 @@
 CREATE OR REPLACE FUNCTION NEW_SERVICE
 (
     servinv   servinv.servinv%TYPE,
-    serdate   servinv.serdate%TYPE,
+    serdate   CHAR,
     cname     servinv.cname%TYPE,
     serial    servinv.serial%TYPE,
     workdesc  servwork.workdesc%TYPE,
@@ -46,7 +46,7 @@ BEGIN
     )
         VALUES (
 		  servinv,
-		  serdate,
+		  TO_DATE(serdate, 'YYYY-MM-DD'),
 		  cname,
 		  serial,
 		  partscost,

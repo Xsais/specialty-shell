@@ -12,9 +12,9 @@
 CREATE OR REPLACE FUNCTION NEW_SALE
 (
     saleinv     saleinv.saleinv%TYPE,
-    ccname       saleinv.cname%TYPE,
+    ccname      saleinv.cname%TYPE,
     salesman    saleinv.salesman%TYPE,
-    saledate    saleinv.saledate%TYPE,
+    saledate    CHAR,
     serial      saleinv.serial%TYPE,
     totalprice  saleinv.totalprice%TYPE  DEFAULT NULL,
     discount    saleinv.discount%TYPE    DEFAULT NULL,
@@ -98,7 +98,7 @@ BEGIN
   	  saleinv,
   	  ccname,
   	  salesman,
-  	  saledate,
+	  TO_DATE(saledate, 'YYYY-MM-DD'),
   	  serial,
   	  totalprice,
   	  discount,

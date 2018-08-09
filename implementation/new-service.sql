@@ -14,7 +14,7 @@ ACCEPT p_labourcost PROMPT   '     Enter the total cost fo r the labour for the 
 
 DECLARE
 
-    v_errorCode SMALLINT := NEW_SERVICE('&p_servinv', TO_DATE('&p_servdate', 'YYYY-MM-DD'), '&p_cname', '&p_serial', '&p_workdesc', '&p_partscost', '&p_labourcost');
+    v_errorCode SMALLINT := NEW_SERVICE('&p_servinv', '&p_servdate', '&p_cname', '&p_serial', '&p_workdesc', '&p_partscost', '&p_labourcost');
 
     invalid_cost EXCEPTION;
     service_exits EXCEPTION;

@@ -22,7 +22,7 @@ ACCEPT p_property PROMPT    '     Did the custer purchase property insurance? ';
 
 DECLARE
 
-    v_errorCode SMALLINT := NEW_SALE('&p_saleinv', '&p_cname', '&p_salesman', TO_DATE('&p_saledate', 'YYYY-MM-DD'), '&p_serial'
+    v_errorCode SMALLINT := NEW_SALE('&p_saleinv', '&p_cname', '&p_salesman','&p_saledate', '&p_serial'
         , '&p_totalprice', '&p_discount', '&p_licfee', '&p_commission', '&p_tradeserial', '&p_tradeallow'
     	, '&p_fire', '&p_collision', '&p_liability', '&p_property');
 
