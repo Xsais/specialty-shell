@@ -21,8 +21,27 @@ CREATE OR REPLACE FUNCTION NEW_PROSPECT
 )
 RETURN SMALLINT
 AS
+
+    v_count SMALLINT;
 BEGIN
     
+    IF UPPER(RTRIM(make)) NOT IN('ACURA', 'LAND ROVER', 'MERCEDES', 'JAGUAR')
+      THEN
+
+        RETURN -3;
+    END IF;
+        
+    SELECT COUNT(*)
+        INTO v_count
+        FROM options o
+        WHERE o.ocode = ocode;
+        
+    IF v_count = 0
+        THEN
+            
+            RETURN -4;
+    END IF;
+        
   INSERT INTO prospect p (
        p.cname,
        p.make,
