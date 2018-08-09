@@ -11,7 +11,7 @@
 
 CREATE OR REPLACE FUNCTION NEW_PROSPECT
 (
-    cname prospect.cname%TYPE,
+    ccname prospect.cname%TYPE,
     make  prospect.make%TYPE,
     model prospect.model%TYPE DEFAULT NULL,
     cyear prospect.cyear%TYPE DEFAULT NULL,
@@ -24,24 +24,35 @@ AS
 
     v_count SMALLINT;
 BEGIN
-    
+
+    SELECT COUNT(*)
+        INTO v_count
+        FROM customer c
+        WHERE UPPER(c.cname) = UPPER(ccname);
+
+  IF v_count = 0
+	THEN
+
+		RETURN -3;
+  END IF;
+
     IF UPPER(RTRIM(make)) NOT IN('ACURA', 'LAND ROVER', 'MERCEDES', 'JAGUAR')
       THEN
 
-        RETURN -3;
+        RETURN -4;
     END IF;
-        
+
     SELECT COUNT(*)
         INTO v_count
         FROM options o
         WHERE o.ocode = ocode;
-        
+
     IF v_count = 0
         THEN
-            
-            RETURN -4;
+
+            RETURN -5;
     END IF;
-        
+
   INSERT INTO prospect p (
        p.cname,
        p.make,
@@ -52,7 +63,7 @@ BEGIN
        p.ocode
    )
   VALUES (
-     cname,
+	 ccname,
      make,
      model,
      cyear,
@@ -60,7 +71,7 @@ BEGIN
      trim,
      ocode
   );
-                    
+
   RETURN 0;
 EXCEPTION
 

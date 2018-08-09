@@ -17,6 +17,7 @@ DECLARE
     v_errorCode SMALLINT := NEW_PROSPECT('&p_cname', '&p_make', '&p_model', '&p_cyear', '&p_color', '&p_trim', '&p_ocode');
 
     prospect_exits EXCEPTION;
+    customer_nexits EXCEPTION;
     internal_exception EXCEPTION;
     invalid_make EXCEPTION;
     invalid_ocode EXCEPTION;
@@ -37,8 +38,12 @@ BEGIN
         WHEN v_errorCode = -3
             THEN
 
-                RAISE invalid_make;
+                RAISE customer_nexits;
         WHEN v_errorCode = -4
+            THEN
+
+                RAISE invalid_make;
+        WHEN v_errorCode = -5
             THEN
             
                 RAISE invalid_ocode;
@@ -58,6 +63,10 @@ EXCEPTION
         THEN
         
             DBMS_OUTPUT.PUT_LINE('The entered make was not valid');
+    WHEN customer_nexits
+        THEN
+
+            DBMS_OUTPUT.PUT_LINE('The entered customer does not exist');
     WHEN invalid_ocode
         THEN
         
