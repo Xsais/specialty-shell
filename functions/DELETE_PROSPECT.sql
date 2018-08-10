@@ -9,24 +9,28 @@
  * * Description: Adds a car tto the database
 */
 
-CREATE OR REPLACE PROCEDURE NEW_VEHICLE
+CREATE OR REPLACE PROCEDURE DELETE_PROSPECT
   (
-	cname prospect.cname%TYPE,
-	make  prospect.make%TYPE,
-	model prospect.model%TYPE,
-	cyear prospect.cyear%TYPE,
-	color prospect.color%TYPE,
-	trim  prospect.trim%TYPE,
-	ocode prospect.ocode%TYPE
+  	v_errorCode OUT SMALLINT,
+	ccname prospect.cname%TYPE
   )
 AS
-
-	v_errorCode OUT SMALLINT;
+	v_count SMALLINT;
   BEGIN
+  
+  SELECT COUNT(*)
+    INTO v_count
+    FROM prospect p
+    WHERE UPPER(p.cname) = UPPER(ccname);
 
+	IF v_count < 1
+		THEN
 
+		v_errorCode := -3;
+        RETURN;
+	END IF;
 
-	EXCEPTION
-	
+	DELETE FROM prospect p
+		WHERE UPPER(p.cname) = UPPER(ccname);
   END;
 /

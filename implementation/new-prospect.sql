@@ -1,3 +1,14 @@
+/*
+ *
+ * * Name: Nathaniel Primo (991455464)
+ * * File: new_prospect.sql
+ * * Creation Date: 2018/08/08
+ * * Last Modified: 201808/08
+ * * Assignment: Final Assignment
+ * * Course: DBAS32100 - 1185_45509
+ * * Description: Adds a prospect the database
+*/
+
 SET SERVEROUTPUT ON;
 SET VERIFY OFF;
 SET FEEDBACK OFF;
@@ -5,12 +16,12 @@ SET FEEDBACK OFF;
 PROMPT Enter the information bellow to insert a new vehicle;
 PROMPT;
 ACCEPT p_cname PROMPT    '     Enter the customers name: ';
-ACCEPT p_make PROMPT     '     Enter the customers desired make (optional): ';
-ACCEPT p_model PROMPT    '     Enter the customers desired model (optional): ';
-ACCEPT p_cyear PROMPT    '     Enter the customers desired year (optional): ';
-ACCEPT p_color PROMPT    '     Enter the customers desired color (optional): ';
-ACCEPT p_trim PROMPT     '     Enter the customers desired trim (optional): ';
-ACCEPT p_ocode PROMPT    '     Enter the customers desired option code (optional): ';
+ACCEPT p_make PROMPT     '     Enter the customers desired make: ';
+ACCEPT p_model PROMPT    '     Enter the customers desired model: ';
+ACCEPT p_cyear PROMPT    '     Enter the customers desired year';
+ACCEPT p_color PROMPT    '     Enter the customers desired color: ';
+ACCEPT p_trim PROMPT     '     Enter the customers desired trim: ';
+ACCEPT p_ocode PROMPT    '     Enter the customers desired option code: ';
 
 DECLARE
 
@@ -23,7 +34,7 @@ DECLARE
     invalid_ocode EXCEPTION;
 BEGIN
 
-NEW_PROSPECT(v_errorCode, '&p_cname', '&p_make', '&p_model', '&p_cyear', '&p_color', '&p_trim', '&p_ocode');
+	NEW_PROSPECT(v_errorCode, '&p_cname', '&p_make', '&p_model', '&p_cyear', '&p_color', '&p_trim', '&p_ocode');
 
     DBMS_OUTPUT.PUT_LINE(CHR(10));
 

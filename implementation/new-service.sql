@@ -1,3 +1,14 @@
+/*
+ *
+ * * Name: Nathaniel Primo (991455464)
+ * * File: new_service.sql
+ * * Creation Date: 2018/08/08
+ * * Last Modified: 201808/08
+ * * Assignment: Final Assignment
+ * * Course: DBAS32100 - 1185_45509
+ * * Description: Adds a service the database
+*/
+
 SET SERVEROUTPUT ON;
 SET VERIFY OFF;
 SET FEEDBACK OFF;
