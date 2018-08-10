@@ -9,7 +9,7 @@
  * * Description: Remove prospect from the database
 */
 
-CREATE OR REPLACE PROCEDURE NEW_VEHICLE
+CREATE OR REPLACE PROCEDURE DELETE_PROSPECT
   (
   	v_errorCode OUT SMALLINT,
 	ccname prospect.cname%TYPE
@@ -35,7 +35,7 @@ AS
 		FROM prospect p
 			WHERE UPPER(p.cname) = UPPER(ccname);
 
-	IF v_count != 0
+	IF v_count < 1
 		THEN
 
 		v_errorCode := -2;
