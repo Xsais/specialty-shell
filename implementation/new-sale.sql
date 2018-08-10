@@ -22,9 +22,7 @@ ACCEPT p_property PROMPT    '     Did the custer purchase property insurance? ';
 
 DECLARE
 
-    v_errorCode SMALLINT := NEW_SALE('&p_saleinv', '&p_cname', '&p_salesman','&p_saledate', '&p_serial'
-        , '&p_totalprice', '&p_discount', '&p_licfee', '&p_commission', '&p_tradeserial', '&p_tradeallow'
-    	, '&p_fire', '&p_collision', '&p_liability', '&p_property');
+    v_errorCode SMALLINT;
 
     invalid_cost EXCEPTION;
     sale_exits EXCEPTION;
@@ -37,6 +35,10 @@ DECLARE
     invalid_sale EXCEPTION;
     invalid_serial EXCEPTION;
 BEGIN
+
+NEW_SALE(v_errorCode, '&p_saleinv', '&p_cname', '&p_salesman','&p_saledate', '&p_serial'
+        , '&p_totalprice', '&p_discount', '&p_licfee', '&p_commission', '&p_tradeserial', '&p_tradeallow'
+    	, '&p_fire', '&p_collision', '&p_liability', '&p_property');
 
     DBMS_OUTPUT.PUT_LINE(CHR(10));
 

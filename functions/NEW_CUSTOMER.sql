@@ -9,7 +9,9 @@
  * * Description: Adds a new customer tto the database
 */
 
-CREATE OR REPLACE FUNCTION NEW_CUSTOMER (
+CREATE OR REPLACE PROCEDURE NEW_CUSTOMER (
+
+  	errorcode  OUT SMALLINT,
 	cname  customer.cname%TYPE,
 	street customer.cstreet%TYPE,
 	city   customer.ccity%TYPE,
@@ -18,7 +20,6 @@ CREATE OR REPLACE FUNCTION NEW_CUSTOMER (
 	hphone customer.chphone%TYPE  DEFAULT NULL,
 	bphone customer.cbphone%TYPE  DEFAULT NULL
 )
-RETURN SMALLINT
 AS
 
   v_count SMALLINT;
@@ -27,44 +28,51 @@ BEGIN
  	IF cname IS NULL
 	  THEN
 
-	  	RETURN -6;
+	  	errorcode := -6;
+		RETURN;
 	END IF;
 
   IF street IS NULL
   THEN
 
-	RETURN -7;
+	errorcode := -7;
+	RETURN;
   END IF;
 
   IF city IS NULL
   THEN
 
-	RETURN -8;
+	errorcode := -8;
+	RETURN;
   END IF;
 
   IF prov IS NULL
   THEN
 
-	RETURN -9;
+	errorcode := -9;
+	RETURN;
   END IF;
 
 
-  IF NOT REGEXP_LIKE(LOWER(postal), '[a-z]\d[a-z][ \-]?\d[a-z]\d')
+  IF postal IS NOT NULL AND NOT REGEXP_LIKE(LOWER(postal), '[a-z]\d[a-z][ \-]?\d[a-z]\d')
         THEN
 
-            RETURN -3;
+            errorcode := -3;
+		  RETURN;
     END IF;
 
-    IF NOT hphone IS NOT NULL AND REGEXP_LIKE(hphone, '\(\d{3}\)\d{3}-\d{4}')
+    IF hphone IS NOT NULL AND NOT hphone IS NOT NULL AND REGEXP_LIKE(hphone, '\(\d{3}\)\d{3}-\d{4}')
         THEN
 
-            RETURN -4;
+            errorcode := -4;
+		  RETURN;
     END IF;
 
-    IF NOT bphone IS NOT NULL AND REGEXP_LIKE(bphone, '\(\d{3}\)\d{3}-\d{4}')
+    IF bphone IS NOT NULL AND NOT bphone IS NOT NULL AND REGEXP_LIKE(bphone, '\(\d{3}\)\d{3}-\d{4}')
         THEN
 
-            RETURN -5;
+            errorcode := -5;
+		  RETURN;
     END IF;
 
     INSERT INTO customer
@@ -87,14 +95,14 @@ BEGIN
        bphone
      );
 
-    RETURN 0;
+    errorcode := 0;
 EXCEPTION
 
     WHEN DUP_VAL_ON_INDEX THEN
-             RETURN -2;
+             errorcode := -2;
 
     WHEN OTHERS THEN
-             RETURN -1;
+             errorcode := -1;
 END;
 /
 

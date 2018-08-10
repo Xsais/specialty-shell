@@ -9,7 +9,7 @@
  * * Description: Adds a car tto the database
 */
 
-CREATE OR REPLACE FUNCTION NEW_VEHICLE
+CREATE OR REPLACE PROCEDURE NEW_VEHICLE
   (
 	cname prospect.cname%TYPE,
 	make  prospect.make%TYPE,
@@ -19,9 +19,12 @@ CREATE OR REPLACE FUNCTION NEW_VEHICLE
 	trim  prospect.trim%TYPE,
 	ocode prospect.ocode%TYPE
   )
-  RETURN SMALLINT
 AS
+
+	v_errorCode OUT SMALLINT;
   BEGIN
+
+
 
 	EXCEPTION
 	

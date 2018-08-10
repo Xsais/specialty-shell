@@ -9,8 +9,9 @@
  * * Description: Adds a new prospect tto the database
 */
 
-CREATE OR REPLACE FUNCTION NEW_PROSPECT
+CREATE OR REPLACE PROCEDURE NEW_PROSPECT
 (
+    errorcode  OUT SMALLINT,
     ccname prospect.cname%TYPE,
     make  prospect.make%TYPE,
     model prospect.model%TYPE DEFAULT NULL,
@@ -19,7 +20,6 @@ CREATE OR REPLACE FUNCTION NEW_PROSPECT
     trim  prospect.trim%TYPE  DEFAULT NULL,
     ocode prospect.ocode%TYPE DEFAULT NULL
 )
-RETURN SMALLINT
 AS
 
     v_count SMALLINT;
@@ -33,13 +33,15 @@ BEGIN
   IF v_count = 0
 	THEN
 
-		RETURN -3;
+		errorcode := -3;
+	  RETURN;
   END IF;
 
     IF UPPER(RTRIM(make)) NOT IN('ACURA', 'LAND ROVER', 'MERCEDES', 'JAGUAR')
       THEN
 
-        RETURN -4;
+        errorcode := -4;
+		RETURN;
     END IF;
 
     SELECT COUNT(*)
@@ -50,7 +52,8 @@ BEGIN
     IF v_count = 0
         THEN
 
-            RETURN -5;
+            errorcode := -5;
+	  		RETURN;
     END IF;
 
   INSERT INTO prospect p (
@@ -72,13 +75,13 @@ BEGIN
      ocode
   );
 
-  RETURN 0;
+  errorcode := 0;
 EXCEPTION
 
     WHEN OTHERS
         THEN
 
-            RETURN -1;
+            errorcode := -1;
 END;
 /
 

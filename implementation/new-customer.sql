@@ -14,7 +14,7 @@ ACCEPT p_bphone PROMPT '     Enter &p_cname''s business phone number: ';
 
 DECLARE
 
-    v_errorCode SMALLINT := NEW_CUSTOMER('&p_cname', '&p_street', '&p_city', '&p_prov', '&p_postal', '&p_hphone', '&p_bphone');
+    v_errorCode SMALLINT;
 
     customer_exits EXCEPTION;
     incorrect_postal EXCEPTION;
@@ -25,6 +25,8 @@ DECLARE
     incorrect_prov EXCEPTION;
     customer_blank EXCEPTION;
 BEGIN
+
+NEW_CUSTOMER(v_errorCode, '&p_cname', '&p_street', '&p_city', '&p_prov', '&p_postal', '&p_hphone', '&p_bphone');
 
     DBMS_OUTPUT.PUT_LINE(CHR(10));
 

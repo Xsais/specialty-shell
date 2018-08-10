@@ -14,7 +14,7 @@ ACCEPT p_ocode PROMPT    '     Enter the customers desired option code (optional
 
 DECLARE
 
-    v_errorCode SMALLINT := NEW_PROSPECT('&p_cname', '&p_make', '&p_model', '&p_cyear', '&p_color', '&p_trim', '&p_ocode');
+    v_errorCode SMALLINT;
 
     prospect_exits EXCEPTION;
     customer_nexits EXCEPTION;
@@ -22,6 +22,8 @@ DECLARE
     invalid_make EXCEPTION;
     invalid_ocode EXCEPTION;
 BEGIN
+
+NEW_PROSPECT(v_errorCode, '&p_cname', '&p_make', '&p_model', '&p_cyear', '&p_color', '&p_trim', '&p_ocode');
 
     DBMS_OUTPUT.PUT_LINE(CHR(10));
 

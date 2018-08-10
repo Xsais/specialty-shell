@@ -9,8 +9,9 @@
  * * Description: Adds a new sale invoice tto the database
 */
 
-CREATE OR REPLACE FUNCTION NEW_SALE
+CREATE OR REPLACE PROCEDURE NEW_SALE
 (
+	errorcode OUT SMALLINT,
     saleinv     saleinv.saleinv%TYPE,
     ccname      saleinv.cname%TYPE,
     csalesman    saleinv.salesman%TYPE,
@@ -27,7 +28,6 @@ CREATE OR REPLACE FUNCTION NEW_SALE
 	liability   saleinv.liability%TYPE   DEFAULT 'N',
 	property    saleinv.property%TYPE    DEFAULT 'N'
 )
-RETURN SMALLINT
 AS
 
     v_count NUMBER;
@@ -37,25 +37,29 @@ BEGIN
   IF saleinv IS NULL
   THEN
 
-	RETURN -21;
+	errorcode := -21;
+	RETURN;
   END IF;
 
   IF ccname IS NULL
   THEN
 
-	RETURN -22;
+	errorcode := -22;
+	RETURN;
   END IF;
 
   IF csalesman IS NULL
   THEN
 
-	RETURN -23;
+	errorcode := -23;
+	RETURN;
   END IF;
 
   IF csaledate IS NULL
   THEN
 
-	RETURN -24;
+	errorcode := -24;
+	RETURN;
   END IF;
 
   SELECT COUNT(*)
@@ -67,37 +71,43 @@ BEGIN
   IF cserial IS NULL OR v_count = 0
   THEN
 
-	RETURN -12;
+	errorcode := -12;
+	RETURN;
   END IF;
 
   IF totalprice IS NOT NULL AND totalprice < 0
     THEN
 
-        RETURN -3;
+        errorcode := -3;
+	  RETURN;
     END IF;
     
    IF discount IS NOT NULL AND discount < 0
     THEN
 
-        RETURN -4;
+        errorcode := -4;
+	  RETURN;
     END IF;
     
    IF licfee IS NOT NULL AND licfee < 0
     THEN
 
-        RETURN -5;
+        errorcode := -5;
+	  RETURN;
     END IF;
     
    IF commission IS NOT NULL AND commission < 0
     THEN
 
-        RETURN -6;
+        errorcode := -6;
+	  RETURN;
     END IF;
     
    IF tradeallow IS NOT NULL AND tradeallow < 0
     THEN
 
-        RETURN -7;
+        errorcode := -7;
+	  RETURN;
     END IF;
 
   SELECT COUNT(*)
@@ -108,7 +118,8 @@ BEGIN
   IF v_count = 0
   THEN
 
-	RETURN -13;
+	errorcode := -13;
+	RETURN;
   END IF;
 
   SELECT COUNT(*)
@@ -119,13 +130,15 @@ BEGIN
   IF v_count = 0
   THEN
 
-	RETURN -14;
+	errorcode := -14;
+	RETURN;
   END IF;
 
   IF v_serdate > SYSDATE OR csaledate < '1885/01/01'
   THEN
 
-	RETURN -15;
+	errorcode := -15;
+	RETURN;
   END IF;
 
   IF ctradeserial IS NOT NULL
@@ -138,32 +151,37 @@ BEGIN
   IF v_count = 0
   THEN
 
-	RETURN -16;
+	errorcode := -16;
+	RETURN;
   END IF;
 	  END IF;
 
   IF fire IS NOT NULL AND UPPER(fire) NOT IN ('Y', 'N')
   THEN
 
-	RETURN -17;
+	errorcode := -17;
+	RETURN;
   END IF;
 
   IF collision IS NOT NULL AND UPPER(collision) NOT IN ('Y', 'N')
   THEN
 
-	RETURN -18;
+	errorcode := -18;
+	RETURN;
   END IF;
 
   IF liability IS NOT NULL AND UPPER(liability) NOT IN ('Y', 'N')
   THEN
 
-	RETURN -19;
+	errorcode := -19;
+	RETURN;
   END IF;
 
   IF property IS NOT NULL AND UPPER(property) NOT IN ('Y', 'N')
   THEN
 
-	RETURN -20;
+	errorcode := -20;
+	RETURN;
   END IF;
 
    INSERT INTO saleinv s (
@@ -209,15 +227,15 @@ BEGIN
         SET c.cname = ccname
         WHERE c.serial = serial;
   
-  RETURN 0;
+  errorcode := 0;
 EXCEPTION
 
     WHEN DUP_VAL_ON_INDEX THEN
 
-         RETURN -2;
+         errorcode := -2;
      WHEN OTHERS THEN
 
-    	 RETURN -1;
+    	 errorcode := -1;
 END;
 /
 /** OUTPUT:

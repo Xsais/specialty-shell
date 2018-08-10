@@ -9,8 +9,9 @@
  * * Description: Adds a new service invoice tto the database
 */
 
-CREATE OR REPLACE FUNCTION NEW_SERVICE
+CREATE OR REPLACE PROCEDURE NEW_SERVICE
 (
+    errorcode OUT SMALLINT,
     servinv   servinv.servinv%TYPE,
     serdate   CHAR,
     ccname     servinv.cname%TYPE,
@@ -19,7 +20,6 @@ CREATE OR REPLACE FUNCTION NEW_SERVICE
     partscost servinv.partscost%TYPE DEFAULT 0,
     labourcost servinv.laborcost%TYPE DEFAULT 0
 )
-RETURN SMALLINT
 AS
 
   	v_serdate DATE := TO_DATE(serdate, 'YYYY-MM-DD');
@@ -34,7 +34,8 @@ BEGIN
   IF v_count = 0
   THEN
 
-	RETURN -5;
+	errorcode := -5;
+	RETURN;
   END IF;
 
   SELECT COUNT(*)
@@ -45,33 +46,38 @@ BEGIN
   IF v_count = 0
   THEN
 
-	RETURN -6;
+	errorcode := -6;
+	RETURN;
   END IF;
 
   IF RTRIM(workdesc) = ''
   THEN
 
-	RETURN -7;
+	errorcode := -7;
+	RETURN;
   END IF;
 
-  IF v_serdate > SYSDATE OR saledate < '1885/01/01'
+  IF v_serdate > SYSDATE OR serdate < '1885/01/01'
 	  THEN
 
-		RETURN -8;
+		errorcode := -8;
+		RETURN;
   END IF;
 
    IF partscost < 0
     THEN
-        
-        RETURN -3;
+
+        errorcode := -3;
+	  RETURN;
     END IF;
-    
+
    IF labourcost < 0
     THEN
-        
-        RETURN -4;
+
+        errorcode := -4;
+	  RETURN;
     END IF;
-    
+
     INSERT INTO servinv s (
 	  s.servinv,
 	  s.serdate,
@@ -90,7 +96,7 @@ BEGIN
 		  labourcost,
 		  ((partscost + labourcost) * 0.13)
          );
-             
+
     INSERT INTO servwork s (
 	  s.servinv,
 	  s.workdesc
@@ -98,13 +104,13 @@ BEGIN
         VALUES (
 		  servinv,
           workdesc
-         );           
-        RETURN 0;
+         );
+        errorcode := 0;
 EXCEPTION
 
     WHEN DUP_VAL_ON_INDEX THEN
 
-         RETURN -2;
+         errorcode := -2;
 END;
 /
 

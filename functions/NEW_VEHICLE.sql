@@ -9,8 +9,9 @@
  * * Description: Adds a car tto the database
 */
 
-CREATE OR REPLACE FUNCTION NEW_VEHICLE
+CREATE OR REPLACE PROCEDURE NEW_VEHICLE
 (
+ 	errorcode  OUT SMALLINT,
     serial     car.serial%TYPE,
     make       car.make%TYPE,
     model      car.model%TYPE,
@@ -26,7 +27,6 @@ CREATE OR REPLACE FUNCTION NEW_VEHICLE
     freightcost car.freightcost%TYPE DEFAULT 0,
     listprice  car.listprice%TYPE    DEFAULT 0
 )
-RETURN SMALLINT
 AS
 
   	v_count SMALLINT;
@@ -35,49 +35,57 @@ BEGIN
   IF serial IS NULL
 	  THEN
 
-		RETURN -6;
+		errorcode := -6;
+		RETURN;
   END IF;
 
   IF make IS NULL
   THEN
 
-	RETURN -7;
+	errorcode := -7;
+	RETURN;
   END IF;
 
   IF make NOT IN('ACURA', 'LAND ROVER', 'MERCEDES', 'JAGUAR')
 	  THEN
 
-		RETURN -13;
+		errorcode := -13;
+		RETURN;
   END IF;
 
   IF model IS NULL
   THEN
 
-	RETURN -8;
+	errorcode := -8;
+	RETURN;
   END IF;
 
   IF cyear IS NULL
   THEN
 
-	RETURN -9;
+	errorcode := -9;
+	RETURN;
   END IF;
 
   IF color IS NULL
   THEN
 
-	RETURN -10;
+	errorcode := -10;
+	RETURN;
   END IF;
 
   IF trim IS NULL
   THEN
 
-	RETURN -11;
+	errorcode := -11;
+	RETURN;
   END IF;
 
   IF enginetype IS NULL
   THEN
 
-	RETURN -12;
+	errorcode := -12;
+	RETURN;
   END IF;
 
 IF ccname IS NOT NULL
@@ -90,7 +98,8 @@ IF ccname IS NOT NULL
   IF v_count = 0
 	THEN
 
-		RETURN -13;
+		errorcode := -13;
+	  RETURN;
   END IF;
 	END IF;
 
@@ -105,26 +114,30 @@ IF ccname IS NOT NULL
 	  IF v_count = 0
 	  THEN
 
-		RETURN -14;
+		errorcode := -14;
+		RETURN;
 	  END IF;
   END IF;
 
   IF purchcost < 0
     THEN
         
-        RETURN -3;
+        errorcode := -3;
+	  RETURN;
     END IF;
 
    IF freightcost < 0
     THEN
         
-        RETURN -4;
+        errorcode := -4;
+	  RETURN;
     END IF;
 
    IF listprice < 0
     THEN
         
-        RETURN -5;
+        errorcode := -5;
+	  RETURN;
     END IF;
 
   INSERT INTO car c (
@@ -161,14 +174,14 @@ IF ccname IS NOT NULL
             purchcost + freightcost,
             listprice
   );
-  RETURN 0;
+  errorcode := 0;
 EXCEPTION
 
     WHEN DUP_VAL_ON_INDEX THEN
-             RETURN -2;
+             errorcode := -2;
 
     WHEN OTHERS THEN
-             RETURN -1;
+             errorcode := -1;
 END;
 /
 
