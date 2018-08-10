@@ -90,7 +90,7 @@ NEW_SALE(v_errorCode, '&p_saleinv', '&p_cname', '&p_salesman','&p_saledate', '&p
         WHEN v_errorCode = -23
         	THEN
 
-        		RAISE invalid_sae;
+        		RAISE invalid_sale;
         WHEN v_errorCode = -24
         	THEN
 
