@@ -18,7 +18,7 @@ CREATE OR REPLACE FUNCTION NEW_VEHICLE
     color      car.color%TYPE,
     trim       car.trim%TYPE,
     enginetype car.enginetype%TYPE,
-    cname      car.cname%TYPE        DEFAULT NULL,
+    ccname      car.cname%TYPE        DEFAULT NULL,
     purchinv   car.purchinv%TYPE     DEFAULT NULL,
     purchdate  car.purchdate%TYPE    DEFAULT NULL,
     purchfrom  car.purchfrom%TYPE    DEFAULT NULL,
@@ -28,9 +28,88 @@ CREATE OR REPLACE FUNCTION NEW_VEHICLE
 )
 RETURN SMALLINT
 AS
+
+  	v_count SMALLINT;
 BEGIN
 
-   IF purchcost < 0
+  IF serial IS NULL
+	  THEN
+
+		RETURN -6;
+  END IF;
+
+  IF make IS NULL
+  THEN
+
+	RETURN -7;
+  END IF;
+
+  IF make NOT IN('ACURA', 'LAND ROVER', 'MERCEDES', 'JAGUAR')
+	  THEN
+
+		RETURN -13;
+  END IF;
+
+  IF model IS NULL
+  THEN
+
+	RETURN -8;
+  END IF;
+
+  IF cyear IS NULL
+  THEN
+
+	RETURN -9;
+  END IF;
+
+  IF color IS NULL
+  THEN
+
+	RETURN -10;
+  END IF;
+
+  IF trim IS NULL
+  THEN
+
+	RETURN -11;
+  END IF;
+
+  IF enginetype IS NULL
+  THEN
+
+	RETURN -12;
+  END IF;
+
+IF ccname IS NOT NULL
+  THEN
+  SELECT COUNT(*)
+	  INTO v_count
+  FROM customer c
+  WHERE UPPER(c.cname) = UPPER(ccname);
+
+  IF v_count = 0
+	THEN
+
+		RETURN -13;
+  END IF;
+	END IF;
+
+  IF purchinv IS NOT NULL
+	THEN
+
+	  SELECT COUNT(*)
+		  INTO v_count
+	  FROM saleinv c
+	  WHERE UPPER(c.saleinv) = UPPER(purchinv);
+
+	  IF v_count = 0
+	  THEN
+
+		RETURN -14;
+	  END IF;
+  END IF;
+
+  IF purchcost < 0
     THEN
         
         RETURN -3;
@@ -67,7 +146,7 @@ BEGIN
   )
   VALUES (
             serial,
-            cname,
+			ccname,
             make,
             model,
             cyear,
