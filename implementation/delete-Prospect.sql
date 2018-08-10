@@ -6,7 +6,7 @@
  * * Last Modified: 201808/08
  * * Assignment: Final Assignment
  * * Course: DBAS32100 - 1185_45509
- * * Description: Deletes a prospect the database
+ * * Description: Deletes a prospect from the database
 */
 
 SET SERVEROUTPUT ON;
@@ -27,7 +27,7 @@ DECLARE
 
 BEGIN
 
-DELETE_PROSPECT(v_errorCode, '&p_cname');
+DELETE_PROSPECT('&p_cname');
 
     DBMS_OUTPUT.PUT_LINE(CHR(10));
 
