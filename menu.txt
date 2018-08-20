@@ -1,0 +1,16 @@
+     SPECIALTY IMPORTS VEHICLE SALES
+-------------------------------------------
+A: Enter a new Customer
+B: Lookup a Customer
+C: Enter a new Vehicle Inventory Record
+D: Lookup a Vehicle Inventory Record
+E: Enter a new Sales Invoice
+F: Lookup a Sales Invoice
+G: Enter a new Service Work Order
+H: Lookup a Service Work Order
+I: Enter a new Prospect
+J: Lookup a Prospective Customer
+K: Lookup All Prospective Customers
+L: Delete a Prospect
+X: Exit this program
+-------------------------------------------
